@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Courier New', Courier, monospace;
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 670px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        #processing {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="font-style: italic;">ProS<sup>2</sup>Vi</h2>
+        <form id="myForm" method="post" action="/submit" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="pdb_name">PDB Code:</label>
+                <input type="text" class="form-control" id="pdb_name" name="pdb_name" required>
+            </div>
+            <div class="form-group">
+                <label for="file">Select PDB file:</label>
+                <input type="file" class="form-control-file" id="file" name="file" required>
+            </div>
+            <div class="form-group">
+                <p>Please select your input file type:</p>
+                <input type="radio" id="pdb" name="file_type" value="pdb">
+                <label for="pdb">PDB</label><br>
+                <input type="radio" id="mmCif" name="file_type" value="mmCif">
+                <label for="mmCif">mmCIF</label><br>
+            </div>
+            <div class="form-group">
+                <label for="residues_per_line">Residues per line:</label>
+                <input type="text" class="form-control" id="residues_per_line" name="residues_per_line" placeholder="Default 50">
+            </div>
+            <div class="form-group">
+                <label for="dpi">DPI:</label>
+                <input type="text" class="form-control" id="dpi" name="dpi" placeholder="Default 100">
+                <p style="font-size: 14px; opacity: 0.8;">Note: Changing DPI might increasing the processing time by a lot, depending on the structure size.</p>
+            </div>
+            <div class="form-group">
+                <label for="output_image">Output image name:</label>
+                <input type="text" class="form-control" id="output_image" name="output_image" placeholder="Default pdb_name.jpg">
+            </div>
+            <div class="form-group">
+                <label for="element_selector">Change icon colors:</label>
+                <div id="element_buttons" style="text-align: center;">
+                    <button type="button" class="btn btn-outline-primary" style="background-color: #0000ff; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('helix')" data-element="helix">α-helix</button>
+                    <button type="button" class="btn btn-outline-primary" style="background-color: #228B22; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('beta')" data-element="beta">β-bridge</button>
+                    <button type="button" class="btn btn-outline-primary" style="background-color: #ff0000; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('strand')" data-element="strand">β-strands</button>
+                    <button type="button" class="btn btn-outline-primary" style="background-color: #ff00ff; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('pihelix')" data-element="pihelix">π-helix</button>
+                    <button type="button" class="btn btn-outline-primary" style="background-color: #ff0000; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('310helix')" data-element="310helix">3<sub>10</sub>-helix</button>
+                    <button type="button" class="btn btn-outline-primary" style="background-color: #ffff00; color: #000000; margin-bottom: 10px;" onclick="selectElement('turn')" data-element="turn">Turn</button>
+                    <button type="button" class="btn btn-outline-primary" style="background-color: #ffa500; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('bend')" data-element="bend">Bend</button>
+                    <button type="button" class="btn btn-outline-primary" style="background-color: #b7b7b7; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('unsolved')" data-element="unsolved">Unsolved</button>
+                </div>
+            </div>
+            <div class="form-group" style="display: none;">
+                <label for="element_color">New Color:</label>
+                <input type="color" class="form-control" id="element_color" name="element_color">
+            </div>
+            <div class="form-group">
+                <label for="checkbox">PDF:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkbox" name="checkbox">
+                    <label class="form-check-label" for="checkbox">
+                        Generate PDF
+                    </label>
+                </div>
+            </div>
+            <button id="submit-button" type="button" class="btn btn-primary btn-block" onclick="submitForm()">Submit</button>
+            <div id="processing">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Processing...</span>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        var elementColors = {}; 
+
+        function submitForm() {
+            var pdbName = document.getElementById('pdb_name').value;
+            var pdbFile = document.getElementById('file');
+            var filename = pdbFile.value;
+            let pdb = document.getElementById('pdb');
+            let mmCif = document.getElementById('mmCif');
+            if (pdbName == '') {
+                alert('PDB Name is missing');
+            } 
+            else if (filename != '' && !hasPDBExtension(filename)) {
+                alert('The uploaded file is not a PDB or a mmCIF file');
+            }
+            else if (!pdb.checked && !mmCif.checked) {
+                alert('File Type not selected');
+            } else {
+                addElementColorsInput();
+                document.getElementById('myForm').submit();
+                document.getElementById('processing').style.display = 'block';
+            }
+        }
+
+        function hasPDBExtension(filename) {
+            return filename.toLowerCase().endsWith('.pdb') || filename.toLowerCase().endsWith('.cif');
+        }
+
+        var selectedElement = null;
+        function selectElement(element) {
+            selectedElement = element;
+            document.getElementById('element_color').click();
+        }
+
+
+        function getTextColor(backgroundColor) {
+            var r = parseInt(backgroundColor.substr(1, 2), 16);
+            var g = parseInt(backgroundColor.substr(3, 2), 16);
+            var b = parseInt(backgroundColor.substr(5, 2), 16);
+
+            var luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            return luminance > 0.5 ? '#000000' : '#ffffff';
+        }
+
+        document.getElementById('element_color').addEventListener('input', function() {
+            if (selectedElement !== null) {
+                var selectedColor = this.value;
+                elementColors[selectedElement] = selectedColor;
+
+                var button = document.querySelector(`button[data-element="${selectedElement}"]`);
+                console.log(button);
+                if (button) {
+                    button.style.backgroundColor = selectedColor;
+                    button.style.color = getTextColor(selectedColor);
+                }
+            } else {
+                console.error('No element selected.');
+            }
+        });
+
+        function addElementColorsInput() {
+             var elementColorsInput = document.createElement('input');
+             elementColorsInput.type = 'hidden';
+             elementColorsInput.name = 'element_colors';
+             elementColorsInput.value = JSON.stringify(elementColors);
+             document.getElementById('myForm').appendChild(elementColorsInput);
+        };
+    </script>
+</body>
+</html>

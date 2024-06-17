@@ -1,0 +1,49 @@
+    <div id="pdb_code">PDB Code: {{ pdb_name }}</div>
+    <div id="title">Title: {{ pdb_title }}<br>Source Scientific Name: {{ scientific_name }}</div>
+
+    <div id="wrapper">
+
+        <div style='align-self: center; margin: 50px; font-size: 16px;'>
+
+            {{ residue_tables }} 
+
+        </div>
+
+        <div id="legend">
+
+        <div style="padding-bottom:20px;">Legend:</div>
+            <div id="legend_element">
+                <div id="legend_icon">{{ H }}</div>
+                <div id="legend_text">H Alpha helix (4-12)</div>
+            </div>
+            <div id="legend_element">
+                <div id="legend_icon">{{ I }}</div>
+                <div id="legend_text">I Pi helix</div>
+            </div>
+            <div id="legend_element">
+                <div id="legend_icon">{{ B }}</div>
+                <div id="legend_text">B Isolated beta-bridge residue</div>
+            </div>
+            <div id="legend_element">
+                <div id="legend_icon">{{ T }}</div>
+                <div id="legend_text">T Turn</div>
+            </div>
+            <div id="legend_element">
+                <div id="legend_icon">{{ E }}</div>
+                <div id="legend_text">E Strand</div>
+            </div>
+            <div id="legend_element">
+                <div id="legend_icon">{{ S }}</div>
+                <div id="legend_text">S Bend</div>
+            </div>
+            <div id="legend_element">
+                <div id="legend_icon">{{ G }}</div>
+                <div id="legend_text">G 3-10 helix</div>
+            </div>
+            <div id="legend_element">
+                <div id="legend_icon">{{ P }}</div>
+                <div id="legend_text">Unsolved structures</div>
+            </div>
+        </div>
+
+    </div>

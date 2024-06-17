@@ -1,0 +1,98 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#pdb_code {
+    margin: 50px 50px 0px 50px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#title {
+    margin-left: 50px;
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+#res {
+    border-collapse: collapse;
+    border: none;
+    padding: 0; 
+    margin: 0;
+    text-align: center; 
+    vertical-align: middle;
+    border: 0;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#legend {
+    font-size: 20px;
+    margin: 50px;
+}
+
+div#legend_element {
+    display: inline-block;
+}
+
+div#legend_text {
+    font-size: 18px;
+    padding-left: 0px;
+    padding-right: 70px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+div#legend_icon {
+    padding-left: 0px;
+    padding-right: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#chain {
+    font-size: 20px; 
+    padding-bottom: 5px; 
+    padding-top: 30px; 
+    font-weight: bold;
+}
+ 
+#res td {
+    padding: 0;
+    width: 20px;
+}
+ 
+.icon {
+    border: 0;
+    font-size: 0;
+    width: 20px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+#wrapper {
+    margin: 0;
+    display:inline-block
+}
+
+#annotation_row td {
+    font-size: 11px;
+    padding-top: 20px;
+    max-width: 20px;
+}
+
+td#count_element_start {
+    font-size: 18px;
+    font-weight: normal;
+    padding-right: 15px;
+    width: 32px;
+    text-align: left;
+}
+
+td#count_element_end {
+    font-size: 18px;
+    font-weight: normal;
+    padding-left: 18px;
+    width: 32px;
+    text-align: right;
+}

@@ -45,7 +45,7 @@ class VisualMap:
         'P': '<?xml version="1.0" encoding="UTF-8" standalone="no"?> <svg class="icon" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 45 70" height="70" width="45" id="svg4495" version="1.1"> <defs id="defs4499"> <linearGradient id="linearGradient5127"> <stop id="stop5123" offset="0" style="stop-color:{color};stop-opacity:1;" /> <stop id="stop5125" offset="1" style="stop-color:{color};stop-opacity:0;" /> </linearGradient> <linearGradient gradientTransform="matrix(0.56226913,0,0,0.47534886,9.2818426e-6,23.623543)" gradientUnits="userSpaceOnUse" y2="28.450703" x2="32.676056" y1="47.042252" x1="33.239433" id="linearGradient5129" xlink:href="#linearGradient5127" /> <linearGradient xlink:href="#linearGradient5127" id="linearGradient5162" x1="32.75" y1="43" x2="32" y2="12" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.56238502,0,0,1,-44.988271,9.9905988)" /> <linearGradient xlink:href="#linearGradient5127" id="linearGradient5162-6" x1="32.75" y1="43" x2="32" y2="12" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.56238502,0,0,1,45.01173,9.9905986)" /> </defs> <path id="path5048" d="m 44.981539,47.075124 c 0,0 -29.982112,0.152632 -44.97182625,1.28e-4 L 0.00185154,38.142998 44.983394,38.143122 Z" style="fill:url(#linearGradient5129);fill-opacity:1;stroke-width:0.06700556" /> <g style="opacity:0.22300002" transform="matrix(0.11590555,0,0,0.03857415,-8.4137034,34.101743)" id="g5102"> <path id="path5108" d="m 460.67892,336.32373 -388.087704,0.003 0.01578,-231.56081 388.087924,0.003 z" style="fill:#aaaaaa;fill-opacity:1" /> <path id="path5106" d="m 460.67892,336.32373 -388.004089,0.003 0.07584,-53.35919 388.087709,-0.003 z" style="fill:#000000;fill-opacity:1" /> </g> </svg>'
     }
     
-    def __init__(self, pdb_name: str, file_path: str, file_type: str = 'pdb') -> None:
+    def __init__(self, file_path: str, pdb_name: str = None, subtitle: str = None, scientific_name: str = None) -> None:
         '''
         
         Args:
@@ -53,9 +53,11 @@ class VisualMap:
             file_path (str): The file path of the PDB file.
 
         '''
-        self.structure_list = self._get_dssp_output(pdb_name, file_path, file_type)
+        self.structure_list = self._get_dssp_output(pdb_name, file_path)
+        self.file_path = file_path
         self.pdb_name = pdb_name
-        self.file_type = file_type
+        self.subtitle = subtitle
+        self.scientific_name = scientific_name
 
     def _update_template(self, residues_per_line: int = 50) -> str:
         '''
@@ -65,8 +67,6 @@ class VisualMap:
         environment = Environment(loader=FileSystemLoader("templates/"))
         template = environment.get_template("template.html.jinja")
         unitprot_data = self.get_uniprot_data(self.pdb_name)
-        rcsb_data = self.get_rcsb_entry_data(self.pdb_name)
-        scientific_name = self.get_scientific_name(self.pdb_name, rcsb_data)
 
         residue_tables = ''
 
@@ -116,15 +116,24 @@ class VisualMap:
                     last_count = i + 1
             
             uniprot_id = self.get_uniprot_id_by_chain_id(unitprot_data, chain_id)
-            residue_tables += f'<div id="chain">Chain {chain_id}:</div> <div>Uniprot ID: {uniprot_id}</div>'
+            if uniprot_id:
+                residue_tables += f'<div id="chain">Chain {chain_id}:</div> <div>Uniprot ID: {uniprot_id}</div>'
             residue_tables += f'<table id="res"><tbody id="res">{table}</tbody></table>'
             last_count = 0
             index_count = {'H': 0, 'B': 0}
 
+        rcsb_data = self.get_rcsb_entry_data(self.pdb_name)
+        if self.pdb_name:
+            self.pdb_name = self.pdb_name.upper()        
+        if self.subtitle == None and rcsb_data:
+            self.subtitle = rcsb_data['struct']['title']
+        if self.scientific_name == None:
+            self.scientific_name = self.get_scientific_name(self.pdb_name, rcsb_data)
+
         content = template.render(
-            pdb_name = self.pdb_name.upper(),
-            pdb_title = rcsb_data['struct']['title'],
-            scientific_name = 'Unknown' if scientific_name is None else scientific_name,
+            pdb_name = self.pdb_name,
+            pdb_title = self.subtitle,
+            scientific_name = self.scientific_name,
             residue_tables = residue_tables,
             H = self._convert_to_png(VisualMap.ICONS['H'].format(color=VisualMap.COLORS['H_COLOR'])),
             B = self._convert_to_png(VisualMap.ICONS['B_A'].format(color=VisualMap.COLORS['B_A_COLOR'])),
@@ -152,7 +161,7 @@ class VisualMap:
         structure_icon_png = f'<img class="icon" src="data:image/png;base64, {img.decode("utf-8")}" />'
         return structure_icon_png
     
-    def _get_dssp_output(self, pdb_name, file_path, file_type):
+    def _get_dssp_output(self, pdb_name, file_path):
         '''
         Private method that takes in the PDB name and path and returns the DSSP secondary structure assignments on the PDB file.
 
@@ -161,12 +170,12 @@ class VisualMap:
             Example output: {"A": [{"chain": "A", "res_num": 1, "res_name": "A", "res_struc": "H"}, {}, {}]}
 
         '''
-        if file_type.lower() == 'pdb':
+        if file_path.split('.')[-1].lower() == 'pdb':
             p = PDBParser(QUIET=True)
-        elif file_type.lower() == 'mmcif':
+        elif file_path.split('.')[-1].lower() == 'cif':
             p = MMCIFParser(QUIET=True)
         else:
-            return Exception('File type has to be either PDB or CIF')
+            return Exception('File type has to be either PDB or mmCIF')
         
         structure = p.get_structure(pdb_name, file_path)
         model = structure[0]
@@ -204,31 +213,32 @@ class VisualMap:
             return None
         
     def get_scientific_name(self, identifier, rcsb_data):
-        entity_ids = rcsb_data['rcsb_entry_container_identifiers']['polymer_entity_ids']
+        if identifier and rcsb_data:
+            entity_ids = rcsb_data['rcsb_entry_container_identifiers']['polymer_entity_ids']
 
-        for entity_id in entity_ids:
-            url = f"https://data.rcsb.org/rest/v1/core/polymer_entity/{identifier}/{entity_id}"
-            response = requests.get(url)
-            
-            if response.status_code == 200:
-                json_data = response.json() 
-            else:
-                print(f"Error: Unable to fetch data (status code: {response.status_code})")
-                continue
-            
-            if 'rcsb_entity_source_organism' in json_data:
-                return json_data['rcsb_entity_source_organism'][0].get('scientific_name', None)
-            else:
-                continue
-
+            for entity_id in entity_ids:
+                url = f"https://data.rcsb.org/rest/v1/core/polymer_entity/{identifier}/{entity_id}"
+                response = requests.get(url)
+                
+                if response.status_code == 200:
+                    json_data = response.json() 
+                else:
+                    print(f"Error: Unable to fetch data (status code: {response.status_code})")
+                    continue
+                
+                if 'rcsb_entity_source_organism' in json_data:
+                    return json_data['rcsb_entity_source_organism'][0].get('scientific_name', None)
+                else:
+                    continue
         return None
     
     def get_uniprot_id_by_chain_id(self, data, target_chain_id):
-        for structure_id, structure_data in data.items():
-            for uniprot_id, uniprot_data in structure_data['UniProt'].items():
-                for mapping in uniprot_data['mappings']:
-                    if mapping['chain_id'] == target_chain_id:
-                        return uniprot_id
+        if data and target_chain_id:
+            for structure_id, structure_data in data.items():
+                for uniprot_id, uniprot_data in structure_data['UniProt'].items():
+                    for mapping in uniprot_data['mappings']:
+                        if mapping['chain_id'] == target_chain_id:
+                            return uniprot_id
         return None
 
     def generate_visual(self, residues_per_line: int = 50, output_image_name: str = '', dpi: int = 100, pdf: bool = False) -> None:
@@ -254,7 +264,7 @@ class VisualMap:
             raise TypeError('The pdf parameter must be a boolean value (True/False)')
 
         if output_image_name == '':
-            output_image_name = f'{self.pdb_name}.jpg'
+            output_image_name = f'{self.pdb_name}.png'
         if '.' not in output_image_name or output_image_name.split('.')[-1].lower() not in ['jpg', 'png', 'gif']:
             raise ValueError('The output image name must end with one of the following extensions: "JPG", "PNG", "GIF"')
         
@@ -272,9 +282,9 @@ class VisualMap:
                    'print-media-type': True,
                    'disable-smart-shrinking': True}
         if dpi == 100:
-            imgkit.from_string(updated_template, f'{output_image_name}', css='templates/styles.css', options={'quality': 100})
+            imgkit.from_string(updated_template, f'{output_image_name}', css='templates/output_styles.css', options={'quality': 100})
         else:
-            pdf_bytes = pdfkit.from_string(updated_template, css='templates/styles.css', options=options)
+            pdf_bytes = pdfkit.from_string(updated_template, css='templates/output_styles.css', options=options)
             pages = pdf2image.convert_from_bytes(pdf_bytes, dpi=dpi)
             if len(pages) == 1:
                 pages[0].save(output_image_name)
@@ -283,4 +293,4 @@ class VisualMap:
                     page.save(f'{output_image_name}')
 
         if pdf:
-            pdfkit.from_string(updated_template, f'{self.pdb_name}.pdf', css='templates/styles.css', options=options)
+            pdfkit.from_string(updated_template, f'{self.pdb_name}.pdf', css='templates/output_styles.css', options=options)

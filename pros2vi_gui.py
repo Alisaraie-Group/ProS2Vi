@@ -1,4 +1,4 @@
-from visual import VisualMap
+from src import visual
 from flask import Flask, request, render_template, redirect, url_for, send_from_directory
 import webbrowser
 from threading import Timer
@@ -14,7 +14,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def index():
-    VisualMap.COLORS = {
+    visual.VisualMap.COLORS = {
         'H_COLOR': '#0000ff',
         'E_COLOR': '#ff0000',
         'E_A_COLOR': '#ff0000',
@@ -31,11 +31,13 @@ def index():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    pdb_name = request.form['pdb_name']
+    pdb_name = request.form['pdb_name'] if request.form['pdb_name'] else None
     file = request.files['file']
-    file_type = request.form['file_type']
-    residues_per_line = request.form['residues_per_line']
-    dpi = request.form['dpi']
+    title = request.form['title'] if request.form['title'] else None
+    subtitle = request.form['subtitle'] if request.form['subtitle'] else None
+    scientific_name = request.form['scientific_name'] if request.form['scientific_name'] else None
+    residues_per_line = int(request.form['residues_per_line']) if request.form['residues_per_line'] else 50
+    dpi = int(request.form['dpi']) if request.form['dpi'] else 100
     global output_image
     output_image = request.form['output_image']
     generate_pdf = 'checkbox' in request.form
@@ -48,56 +50,46 @@ def submit():
     colors_parsed = json.loads(elements_colors_json)
 
     filename = file.filename
-    file_ext = 'pdb' if file_type == 'pdb' else 'cif'
 
     if filename == '':
-        if not os.path.isfile(f'uploads/{pdb_name}.{file_ext}'):
+        if not os.path.isfile(f'uploads/{pdb_name}.cif'):
             try:
                 pdbl = PDBList()
-                pdbl.retrieve_pdb_file(pdb_name, pdir='uploads', file_format=file_type)
+                pdbl.retrieve_pdb_file(pdb_name, pdir='uploads', file_format='mmCif')
             except Exception as e:
                 return redirect(url_for('error_page'))
 
-            if file_type == 'pdb':
-                os.rename(f'uploads/pdb{pdb_name.lower()}.ent', f'uploads/{pdb_name.lower()}.pdb')
-
-        file_path = f'uploads/{pdb_name.lower()}.{file_ext}'
+        file_path = f'uploads/{pdb_name.lower()}.cif'
     else:
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
 
-    if residues_per_line == '':
-        residues_per_line = 50
-    else:
-        residues_per_line = int(residues_per_line)
-    if dpi == '':
-        dpi = 100
-    else: 
-        dpi = int(dpi)
     if output_image == '':
         output_image = f'{pdb_name}.jpg'
 
-    vs = VisualMap(pdb_name=pdb_name, file_path=file_path, file_type=file_type)
+    pdb_name = title if title else pdb_name
+
+    vs = visual.VisualMap(pdb_name=pdb_name, file_path=file_path, subtitle=subtitle, scientific_name=scientific_name)
 
     if 'helix' in colors_parsed.keys():
-        VisualMap.COLORS['H_COLOR'] = colors_parsed['helix']
+        visual.VisualMap.COLORS['H_COLOR'] = colors_parsed['helix']
     if 'beta' in colors_parsed.keys():
-        VisualMap.COLORS['B_COLOR'] = colors_parsed['beta']
-        VisualMap.COLORS['B_A_COLOR'] = colors_parsed['beta']
+        visual.VisualMap.COLORS['B_COLOR'] = colors_parsed['beta']
+        visual.VisualMap.COLORS['B_A_COLOR'] = colors_parsed['beta']
     if 'strand' in colors_parsed.keys():
-        VisualMap.COLORS['E_COLOR'] = colors_parsed['strand']
-        VisualMap.COLORS['E_A_COLOR'] = colors_parsed['strand']
+        visual.VisualMap.COLORS['E_COLOR'] = colors_parsed['strand']
+        visual.VisualMap.COLORS['E_A_COLOR'] = colors_parsed['strand']
     if 'pihelix' in colors_parsed.keys(): 
-        VisualMap.COLORS['I_COLOR'] = colors_parsed['pihelix']
+        visual.VisualMap.COLORS['I_COLOR'] = colors_parsed['pihelix']
     if '310helix' in colors_parsed.keys():
-        VisualMap.COLORS['G_COLOR'] = colors_parsed['310helix']
+        visual.VisualMap.COLORS['G_COLOR'] = colors_parsed['310helix']
     if 'turn' in colors_parsed.keys():
-        VisualMap.COLORS['T_COLOR'] = colors_parsed['turn']
+        visual.VisualMap.COLORS['T_COLOR'] = colors_parsed['turn']
     if 'bend' in colors_parsed.keys():
-        VisualMap.COLORS['S_COLOR'] = colors_parsed['bend']
+        visual.VisualMap.COLORS['S_COLOR'] = colors_parsed['bend']
     if 'unsolved' in colors_parsed.keys():
-        VisualMap.COLORS['-_COLOR'] = colors_parsed['unsolved']
-        VisualMap.COLORS['P_COLOR'] = colors_parsed['unsolved']
+        visual.VisualMap.COLORS['-_COLOR'] = colors_parsed['unsolved']
+        visual.VisualMap.COLORS['P_COLOR'] = colors_parsed['unsolved']
 
     try:
         vs.generate_visual(residues_per_line=residues_per_line, output_image_name=output_image, dpi=dpi, pdf=generate_pdf)

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizer</title>
+    <title>ProS2Vi</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -42,27 +42,75 @@
             text-align: center;
             margin-top: 20px;
         }
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .tab button {
+            flex: 1;
+            text-align: center;
+            padding: 14px 0;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 17px;
+            background-color: inherit;
+        }
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        .tab button.active {
+            background-color: #ccc;
+        }
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2 style="font-style: italic;">ProS<sup>2</sup>Vi</h2>
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'Tab1')">Look-up PDB file</button>
+            <button class="tablinks" onclick="openTab(event, 'Tab2')">Upload PDB File</button>
+        </div>
+
         <form id="myForm" method="post" action="/submit" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="pdb_name">PDB Code:</label>
-                <input type="text" class="form-control" id="pdb_name" name="pdb_name" required>
+            <div id="Tab1" class="tabcontent">
+                <div class="form-group">
+                    <label for="pdb_name">PDB Code:</label>
+                    <input type="text" class="form-control" id="pdb_name" name="pdb_name" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="file">Select PDB file:</label>
-                <input type="file" class="form-control-file" id="file" name="file" required>
+
+            <div id="Tab2" class="tabcontent">
+                <div class="form-group">
+                    <label for="file">Select PDB file:</label>
+                    <input type="file" class="form-control-file" id="file" name="file" required>
+                </div>
+                <p style="font-size: 14px; opacity: 0.8;">Note: The fields below are optional and will be omitted from the final output if no input text is provided.</p>
+                <div class="form-group">
+                    <label for="title">Title/PDB Code:</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="subtitle">Subtitle:</label>
+                    <input type="text" class="form-control" id="subtitle" name="subtitle" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="scientific_name">Scientific Name:</label>
+                    <input type="text" class="form-control" id="scientific_name" name="scientific_name" placeholder="">
+                </div>
             </div>
-            <div class="form-group">
-                <p>Please select your input file type:</p>
-                <input type="radio" id="pdb" name="file_type" value="pdb">
-                <label for="pdb">PDB</label><br>
-                <input type="radio" id="mmCif" name="file_type" value="mmCif">
-                <label for="mmCif">mmCIF</label><br>
-            </div>
+
             <div class="form-group">
                 <label for="residues_per_line">Residues per line:</label>
                 <input type="text" class="form-control" id="residues_per_line" name="residues_per_line" placeholder="Default 50">
@@ -70,7 +118,7 @@
             <div class="form-group">
                 <label for="dpi">DPI:</label>
                 <input type="text" class="form-control" id="dpi" name="dpi" placeholder="Default 100">
-                <p style="font-size: 14px; opacity: 0.8;">Note: Changing DPI might increasing the processing time by a lot, depending on the structure size.</p>
+                <p style="font-size: 14px; opacity: 0.8;">Note: Changing DPI might increase the processing time by a lot, depending on the structure size.</p>
             </div>
             <div class="form-group">
                 <label for="output_image">Output image name:</label>
@@ -102,6 +150,7 @@
                     </label>
                 </div>
             </div>
+
             <button id="submit-button" type="button" class="btn btn-primary btn-block" onclick="submitForm()">Submit</button>
             <div id="processing">
                 <div class="spinner-border text-primary" role="status">
@@ -117,25 +166,43 @@
     <script>
         var elementColors = {}; 
 
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementsByClassName("tablinks")[0].click();
+        });
+
         function submitForm() {
             var pdbName = document.getElementById('pdb_name').value;
             var pdbFile = document.getElementById('file');
             var filename = pdbFile.value;
             let pdb = document.getElementById('pdb');
             let mmCif = document.getElementById('mmCif');
-            if (pdbName == '') {
-                alert('PDB Name is missing');
-            } 
-            else if (filename != '' && !hasPDBExtension(filename)) {
+            if (filename != '' && !hasPDBExtension(filename)) {
                 alert('The uploaded file is not a PDB or a mmCIF file');
-            }
-            else if (!pdb.checked && !mmCif.checked) {
-                alert('File Type not selected');
             } else {
                 addElementColorsInput();
                 document.getElementById('myForm').submit();
                 document.getElementById('processing').style.display = 'block';
             }
+            addElementColorsInput();
+            document.getElementById('myForm').submit();
+            document.getElementById('processing').style.display = 'block';
         }
 
         function hasPDBExtension(filename) {
@@ -147,7 +214,6 @@
             selectedElement = element;
             document.getElementById('element_color').click();
         }
-
 
         function getTextColor(backgroundColor) {
             var r = parseInt(backgroundColor.substr(1, 2), 16);

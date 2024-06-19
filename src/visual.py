@@ -116,8 +116,9 @@ class VisualMap:
                     last_count = i + 1
             
             uniprot_id = self.get_uniprot_id_by_chain_id(unitprot_data, chain_id)
+            residue_tables += f'<div id="chain">Chain {chain_id}:</div>'
             if uniprot_id:
-                residue_tables += f'<div id="chain">Chain {chain_id}:</div> <div>Uniprot ID: {uniprot_id}</div>'
+                residue_tables += f'<div>Uniprot ID: {uniprot_id}</div>'
             residue_tables += f'<table id="res"><tbody id="res">{table}</tbody></table>'
             last_count = 0
             index_count = {'H': 0, 'B': 0}
@@ -265,8 +266,8 @@ class VisualMap:
 
         if output_image_name == '':
             output_image_name = f'{self.pdb_name}.png'
-        if '.' not in output_image_name or output_image_name.split('.')[-1].lower() not in ['jpg', 'png', 'gif']:
-            raise ValueError('The output image name must end with one of the following extensions: "JPG", "PNG", "GIF"')
+        if '.' not in output_image_name or output_image_name.split('.')[-1].lower() not in ['jpg', 'png']:
+            raise ValueError('The output image name must end with one of the following extensions: "JPG", "PNG"')
         
         updated_template = self._update_template(residues_per_line=residues_per_line)
         output_width, output_height = self._get_width_and_height(residues_per_line=residues_per_line)

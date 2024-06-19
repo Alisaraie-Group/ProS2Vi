@@ -16,8 +16,6 @@ def main():
 
     args = parser.parse_args()
 
-    print(type(args.subtitle))
-
     vs = visual.VisualMap(file_path=args.pdb_file_path, pdb_name=args.pdb_name, subtitle=args.subtitle, scientific_name=args.scientific_name)
     vs.generate_visual(residues_per_line=args.residues_per_line, output_image_name=args.output_image_name, dpi=args.dpi, pdf=args.pdf)
 

@@ -1,5 +1,8 @@
-    <div id="pdb_code">PDB Code: {{ pdb_name }}</div>
-    <div id="title">Title: {{ pdb_title }}<br>Source Scientific Name: {{ scientific_name }}</div>
+    {% if pdb_name %}<div id="pdb_code">PDB Code: {{ pdb_name }}</div>{% endif %}
+    <div id="title">
+        {% if pdb_title %}Title: {{ pdb_title }} <br>{% endif %}
+        {% if scientific_name %}Source Scientific Name: {{ scientific_name }}{% endif %}
+    </div>
 
     <div id="wrapper">
 

@@ -36,6 +36,17 @@ else
     echo "pip is already installed."
 fi
 
+VENV_DIR="venv"
+if [ ! -d "$VENV_DIR" ]; then
+    echo "Creating Python virtual environment..."
+    python3 -m venv "$VENV_DIR"
+else
+    echo "Python virtual environment already exists."
+fi
+
+echo "Activating the Python virtual environment..."
+source "$VENV_DIR/bin/activate"
+
 if [ -f "requirements.txt" ]; then
     echo "Installing Python libraries from requirements.txt..."
     pip3 install -r requirements.txt

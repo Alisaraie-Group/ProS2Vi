@@ -18,8 +18,9 @@ Follow these steps to set up ProS<sup>2</sup>Vi on your system.
 
 ### Prerequisites
 
-1. **Preferred Operating System**: It is recommended to run this tool on a Linux system or Windows Subsystem for Linux (WSL) for optimal performance and compatibility.
+1. **Preferred Operating System**: ProS<sup>2</sup>Vi needs to be run on a Linux system. For Windows users, you need to install Windows Subsystem for Linux (WSL) from the [Microsoft website](https://docs.microsoft.com/en-us/windows/wsl/install).
 2. **Installation Methods**: You can install all the required components manually or automatically using the provided bash script.
+2. **Installation Methods**: You can install all the required components manually or automatically using the provided shell script.
 
 - **Manual Installation**:
   1. **Install Python**: Ensure Python is installed on your system.
@@ -34,15 +35,20 @@ Follow these steps to set up ProS<sup>2</sup>Vi on your system.
      ```bash
      sudo apt-get install wkhtmltopdf
      ```
-  4. **Install Python Requirements**:
+  4. **Set Up a Virtual Environment**:
+     ```bash
+     python -m venv venv
+     source venv/bin/activate
+     ```
+  5. **Install Python Requirements**:
      ```bash
      pip install -r requirements.txt
      ```
 
-- **Automatic Installation**: Run the `requirements.sh` script to check and install all dependencies including Python, DSSP, wkhtmltopdf, and the required Python libraries:
+- **Automatic Installation**: Run the `install_dependencies.sh` script that check ands install all dependencies including Python, DSSP, wkhtmltopdf, and then creates a virtual environment and installs the required Python libraries:
   ```bash
-  chmod +x requirements.sh
-  ./requirements.sh
+  chmod +x install_dependencies.sh
+  ./install_dependencies.sh
   ```
 
 ### Running ProS<sup>2</sup>Vi
@@ -51,28 +57,28 @@ You can use ProS<sup>2</sup>Vi either through a command-line parser or via a Fla
 
 ### Using the Flask-based GUI
 
-1. **Run Main Script**: Execute `python app.py` from the terminal. This will launch a browser window.
-2. **Upload PDB File**: In the browser, upload your PDB file and enter the PDB code.
+1. **Run Main Script**: Execute `python3 pros2vi_gui.py` from the terminal. This will launch a browser window.
+2. **Add the Protein Structure**: In the browser, upload your PDB file or enter the PDB code.
 3. **Optional Arguments**: Enter values in the optional input fields if needed.
 4. **Submit and Visualize**: Press `Submit` to create the visualization. The visualization will be saved in the main directory.
 
 ### Using the Command-line Parser
 
-1. **Run the Script**: Provide the required arguments such as the PDB name/code and the path to the PDB file. Example:
+1. **Run the Script**: Provide the path to the PDF/mmCIF file and optional arguments. Example:
     ```bash
-    python visual.py 1FAT pdb_folder/1fat.pdb
+    python3 pros2vi_cli.py pdb_folder/1fat.pdb
     ```
 
 2. **Specify Additional Arguments**: Use positional arguments for additional options. Example:
     - **30 Residues per Line and PDF Output**:
       ```bash
-      python visual.py 1FAT pdb_folder/1fat.pdb -r 30 -pdf
+      python visual.py pdb_folder/1fat.pdb -r 30 -pdf
       ```
       Here, `-r 30` sets 30 residues per line, and `-pdf` generates a PDF output.
 
     - **200 DPI Resolution and PNG Output**:
       ```bash
-      python visual.py 1FAT pdb_folder/1fat.pdb -o output/test.png -d 200
+      python visual.py pdb_folder/1fat.pdb -o output/test.png -d 200
       ```
       Here, `-o output/test.png` sets the output path and filename to `test.png`, and `-d 200` sets the DPI to 200.
       

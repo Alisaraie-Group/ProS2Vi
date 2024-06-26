@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/816348234.svg)](https://zenodo.org/doi/10.5281/zenodo.12554830)
+
 # ProS<sup>2</sup>Vi - a Python Tool for Visualizing Proteins Secondary Structure
 
 ## Setup Instructions

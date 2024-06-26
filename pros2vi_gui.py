@@ -9,6 +9,9 @@ from Bio.PDB import PDBList
 
 app = Flask(__name__)
 
+if not os.path.exists('uploads'):
+    os.makedirs('uploads')
+
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 

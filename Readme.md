@@ -1,4 +1,6 @@
 [![DOI](https://zenodo.org/badge/816348234.svg)](https://zenodo.org/doi/10.5281/zenodo.12554830)
+[![DOI](http://img.shields.io/badge/DOI-10.48550/arXiv.2408.03436-B31B1B.svg)](https://doi.org/10.48550/arXiv.2408.03436)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # ProS<sup>2</sup>Vi - a Python Tool for Visualizing Proteins Secondary Structure
 
@@ -84,3 +86,34 @@ You can use ProS<sup>2</sup>Vi either through a command-line parser or via a Fla
       ```
       Here, `-o output/test.png` sets the output path and filename to `test.png`, and `-d 200` sets the DPI to 200.
       
+## Citing ProS<sup>2</sup>Vi
+
+If you use ProS<sup>2</sup>Vi in academic work, please cite the software as
+
+```
+@software{qasim_2024_12554831,
+  author       = {Qasim, Muhammad Luckman and
+                  Alisaraie, Laleh},
+  title        = {Alisaraie-Group/ProS2Vi: ProS2Vi 1.0.1},
+  month        = jun,
+  year         = 2024,
+  publisher    = {Zenodo},
+  version      = {v1.0.1},
+  doi          = {10.5281/zenodo.12554831},
+  url          = {https://doi.org/10.5281/zenodo.12554831}
+}
+```
+
+and the article as
+
+```
+@misc{qasim2024pros2vipythontoolvisualizing,
+      title={ProS2Vi: a Python Tool for Visualizing Proteins Secondary Structure}, 
+      author={Luckman Qasim and Laleh Alisaraie},
+      year={2024},
+      eprint={2408.03436},
+      archivePrefix={arXiv},
+      primaryClass={q-bio.BM},
+      url={https://arxiv.org/abs/2408.03436}, 
+}
+```

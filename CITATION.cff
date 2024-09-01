@@ -1,0 +1,19 @@
+cff-version: 1.1.0
+message: "If you use this dataset, please cite it as below."
+authors:
+  - family-names: Qasim
+    given-names: Muhammad Luckman
+    orcid: https://orcid.org/0009-0002-3036-9370
+  - family-names: Alisaraie
+    given-names: Laleh
+    orcid: https://orcid.org/0000-0002-8874-5909
+title: ProS2Vi - a Python Tool for Visualizing Proteins Secondary Structure
+version: v1.0.1
+identifiers:
+  - description: Zenodo archive of the ProS2Vi software.
+    type: doi
+    value: 10.5281/zenodo.12554831
+  - description: Preprint of the manuscript describing the software and its use.
+    type: doi
+    value: 10.48550/arXiv.2408.03436
+date-released: 2024-06-26

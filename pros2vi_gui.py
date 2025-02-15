@@ -132,7 +132,7 @@ def result():
 
 @app.route('/result_image/<filename>')
 def result_image(filename):
-    return send_from_directory(os.getcwd(), filename)
+    return send_from_directory(f'{os.getcwd()}/output', filename)
 
 @app.route('/error_page_size')
 def error_page_size():

@@ -1,4 +1,4 @@
-#   Copyright 2024 Muhammad Luckman Qasim,  Laleh Alisaraie
+#   Copyright 2025 Muhammad Luckman Qasim,  Laleh Alisaraie
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import PIL
 import imgkit
 import pdf2image
 import requests
+import os
 
 PIL.Image.MAX_IMAGE_PIXELS = None
 
@@ -278,8 +279,13 @@ class VisualMap:
         if not isinstance(pdf, bool):
             raise TypeError('The pdf parameter must be a boolean value (True/False)')
 
+        output_folder = 'output'
+        # Create folder if it doesn't exist
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+
         if output_image_name == '':
-            output_image_name = f'{self.pdb_name}.png'
+            output_image_name = f'{os.path.splitext(os.path.basename(self.file_path))[0]}.png'
         if '.' not in output_image_name or output_image_name.split('.')[-1].lower() not in ['jpg', 'png']:
             raise ValueError('The output image name must end with one of the following extensions: "JPG", "PNG"')
         
@@ -297,7 +303,7 @@ class VisualMap:
                    'print-media-type': True,
                    'disable-smart-shrinking': True}
         if dpi == 100:
-            imgkit.from_string(updated_template, f'{output_image_name}', css='templates/output_styles.css', options={'quality': 100})
+            imgkit.from_string(updated_template, f'{output_folder}/{output_image_name}', css='templates/output_styles.css', options={'quality': 100})
         else:
             pdf_bytes = pdfkit.from_string(updated_template, css='templates/output_styles.css', options=options)
             pages = pdf2image.convert_from_bytes(pdf_bytes, dpi=dpi)
@@ -305,7 +311,7 @@ class VisualMap:
                 pages[0].save(output_image_name)
             else:
                 for count, page in enumerate(pages):
-                    page.save(f'{output_image_name}')
+                    page.save(f'{output_folder}/{output_image_name}')
 
         if pdf:
             pdfkit.from_string(updated_template, f'{self.pdb_name}.pdf', css='templates/output_styles.css', options=options)

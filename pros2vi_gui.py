@@ -1,4 +1,4 @@
-#   Copyright 2024 Muhammad Luckman Qasim,  Laleh Alisaraie
+#   Copyright 2025 Muhammad Luckman Qasim,  Laleh Alisaraie
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import os
 import json
 from PIL.Image import DecompressionBombError
 from Bio.PDB import PDBList
+import time
 
 app = Flask(__name__)
 
@@ -76,13 +77,21 @@ def submit():
             except Exception as e:
                 return redirect(url_for('error_page'))
 
+        start_time = time.time() 
+        timeout = 10
+        while not os.path.exists(f'uploads/{pdb_name.lower()}.cif'):
+            if time.time() - start_time > timeout:
+                print("❌ Download attempt timed out.")
+                return redirect(url_for('error_page'))
+            time.sleep(0.5)
+
         file_path = f'uploads/{pdb_name.lower()}.cif'
     else:
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
 
     if output_image == '':
-        output_image = f'{pdb_name}.jpg'
+        output_image = f'{os.path.splitext(os.path.basename(file_path))[0]}.png'
 
     pdb_name = title if title else pdb_name
 
@@ -139,4 +148,3 @@ def open_browser():
 if __name__ == "__main__":
       Timer(1, open_browser).start()
       app.run(port=3000)
-

@@ -96,7 +96,8 @@
                     <label for="file">Select PDB file:</label>
                     <input type="file" class="form-control-file" id="file" name="file" required>
                 </div>
-                <p style="font-size: 14px; opacity: 0.8;">Note: The fields below are optional and will be omitted from the final output if no input text is provided.</p>
+                <p style="font-size: 14px; opacity: 0.8;">Note: The fields below are optional and will be omitted from the final output if no input text is provided. <br>
+                If you want the output image to contain Uniprot IDs, please enter the PDB Code.</p>
                 <div class="form-group">
                     <label for="title">Title/PDB Code:</label>
                     <input type="text" class="form-control" id="title" name="title" placeholder="">
@@ -118,11 +119,11 @@
             <div class="form-group">
                 <label for="dpi">DPI:</label>
                 <input type="text" class="form-control" id="dpi" name="dpi" placeholder="Default 100">
-                <p style="font-size: 14px; opacity: 0.8;">Note: Changing DPI might increase the processing time by a lot, depending on the structure size.</p>
+                <p style="font-size: 14px; opacity: 0.8;">Note: Changing DPI might increase the processing time significantly, depending on the structure size.</p>
             </div>
             <div class="form-group">
                 <label for="output_image">Output image name:</label>
-                <input type="text" class="form-control" id="output_image" name="output_image" placeholder="Default pdb_code.png">
+                <input type="text" class="form-control" id="output_image" name="output_image" placeholder="Default filename.png">
             </div>
             <div class="form-group">
                 <label for="element_selector">Change icon colors:</label>

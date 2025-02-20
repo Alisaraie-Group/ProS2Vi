@@ -1,4 +1,4 @@
-#   Copyright 2025 Muhammad Luckman Qasim,  Laleh Alisaraie
+#   Copyright 2024-2025 Muhammad Luckman Qasim,  Laleh Alisaraie
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ class VisualMap:
         '-_COLOR': '#b7b7b7',
         'P_COLOR': '#b7b7b7'
     }
+
     ICONS = {
         'H': '<?xml version="1.0" encoding="UTF-8" standalone="no"?> <svg class="icon" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg4485" width="45" height="70" viewBox="0 0 45 70"> <defs id="defs4489" /> <path style="fill:{color};fill-opacity:1;stroke-width:0.64925498" d="M 37.848252,50.651288 C 35.158012,49.282652 31.538905,42.925169 29.054794,32.294924 27.52851,25.763522 25.383545,19.931385 24.507687,19.931385 c -1.039297,0 -5.93362,9.357192 -9.044078,17.290834 -1.57809,4.025146 -3.060396,6.39719 -4.368307,8.515175 C 7.676557,55.467756 3.289281e-6,55.539 3.289281e-6,55.539 L 0,41.045416 c -1.7361604e-6,-7.650057 0.00185329,-12.336357 0.00185329,-12.336357 0,0 1.65548821,3.498058 1.82624851,4.412888 0.2747429,1.471912 0.4181418,1.538248 1.2459953,0.576362 1.283722,-1.491553 2.4111662,-5.511281 2.4111662,-8.596657 0,-2.997608 2.3200041,-8.499697 4.8332857,-11.462494 1.354381,-1.596627 2.527089,-2.136718 5.440326,-2.505542 2.042576,-0.258602 5.513427,-0.805607 7.712994,-1.2155771 5.689088,-1.060357 8.31784,-0.8915145 10.698676,0.6871611 2.231106,1.479413 6.103048,8.000863 8.356539,14.074809 0.733694,1.977751 2.474771,4.029071 2.474771,4.029071 0,0 -0.02302,4.772834 -0.02302,11.158552 0,6.693024 0.02117,15.671387 0.02117,15.671387 0,0 -4.821633,-3.250321 -7.151553,-4.887731 z M 27.853519,19.084357 c 0.229909,-1.658974 -1.060782,-3.61579 -2.764683,-4.191528 -1.311304,-0.443084 -1.466021,-0.319774 -1.152446,0.918543 0.524251,2.070273 2.506403,4.963475 3.183999,4.64746 0.319072,-0.148808 0.648988,-0.767321 0.73313,-1.374475 z" id="path4510-8" /> <g id="g4530-3" transform="matrix(0.54870255,0,0,0.76848153,0.00126643,2.1515045)" style="opacity:0.456"> <path style="fill:#b9b9b9;fill-opacity:1" d="M 67.193339,62.127255 C 63.784542,60.483775 56.741729,50.710524 52.613775,39.456894 50.587618,33.933185 48.022545,27.921838 46.913613,26.098345 44.954554,22.876931 44.841237,22.833703 42.918065,24.57415 40.340859,26.90649 31.226244,40.660552 26.561435,49.256498 23.759798,54.419137 21.971078,56.484269 18.978906,58.010761 15.413576,59.829657 4.2955425,62.949206 1.25,62.985219 0.30915652,62.996344 0.00378724,59.599278 0.01531277,49.25 0.02373477,41.6875 0.00106954,34.558481 0.00106954,34.558481 c 0,0 1.58499126,2.750871 2.39664126,3.85113 0.3254234,0.441138 0.8108459,1.420605 1.0592729,2.035237 0.2334284,0.577525 0.3461697,1.449022 0.9954709,1.375557 0.9701687,-0.10977 2.484466,-2.860058 3.6175842,-4.714339 1.0263826,-1.679614 1.4004592,-7.38002 2.3217892,-9.831136 0.830557,-2.209622 1.635078,-4.289431 2.443584,-5.440184 4.296929,-6.115856 8.114404,-9.207842 11.389868,-9.696629 11.386772,-1.699212 27.933744,-3.0140136 30.950443,-3.0129532 3.710766,0.0013 9.906849,3.0114642 12.136544,5.7433582 4.210524,3.39774 11.637159,17.390392 13.821986,20.352449 C 82.052312,35.653348 82,39.666667 82,49 L 81.72727,62.774334 75.25,63.93232 C 71.5375,63.8951 68.4361,62.726427 67.193339,62.127255 Z" id="path4536-8" /> <path style="fill:#8c8c8c;fill-opacity:1" d="M 69,62.974804 C 63.368195,61.654591 57.985121,53.601464 52.974157,39 49.931967,30.135353 46.232751,23 44.679198,23 42.805903,23 33.865474,35.160993 28.5054,45 25.958564,49.675 22.8066,54.466281 21.501037,55.64729 15.0252,63.683907 13.708063,67.920507 -0.00230205,69.47141 L 0,50.475 C 0.001263,40.052778 0.24682699,38 1.5,38 1.6227654,38 2.8791855,39.231902 2.9320418,39.530078 3.446868,42.434338 8.3492855,51 10.196468,51 c 2.027976,0 2.388241,-2.015291 0.667818,-3.735714 -0.847619,-0.847619 -0.694054,-1.577375 0.605376,-2.876805 1.778307,-1.778307 1.77441,-2.597755 -0.0758,-15.941264 -0.50396,-3.634501 -0.140495,-4.587152 3.514122,-9.210589 5.083443,-6.431038 6.021303,-6.923385 14.616588,-7.673243 3.836487,-0.334698 11.306316,-1.113708 16.59962,-1.7311348 8.586429,-1.001546 10.171991,-0.9256065 14.704508,0.7042638 4.252785,1.52928 5.902182,2.92863 10.125811,8.590747 C 73.729529,22.846401 76,26.187106 76,26.550051 c 0,0.362945 1.35,2.66022 3,5.105056 2.961073,4.387478 3,4.618166 3,17.778394 0,12.981733 -1.012224,16.848237 -3.202904,17.435318 C 75.927588,67.637817 73.423257,64.011708 69,62.974804 Z M 54.75,19.814213 C 56.5375,17.04208 58,14.410582 58,13.966441 c 0,-1.344866 -5.778372,-2.176102 -10.271726,-1.477618 -8.231227,1.27953 -8.150147,1.151002 -3.987583,6.321097 5.496503,6.826911 5.6564,6.980604 6.754045,6.492009 C 51.047631,25.055818 52.9625,22.586346 54.75,19.814213 Z" id="path4534-5" /> <path style="fill:#606060;fill-opacity:1" d="M 66.5,61.792183 C 65.4,61.161334 63.955514,59.937518 63.290031,59.072592 61.476307,56.715302 55.99412,46.346346 56.040038,45.360023 56.062058,44.88701 56.722484,45.682254 57.50765,47.127232 59.398009,50.606147 62.86283,51.154873 72,49.422398 82.698986,47.393791 81.994297,46.968977 82,55.5 l 0.0093,13.971434 c 0,0 -9.080445,-4.406368 -15.50934,-7.679251 z M 0,54.5 c 0,-6.483035 0.23729179,-7.497564 1.75,-7.482033 0.9836017,0.0101 3.1673731,2.185748 4.9864409,4.967895 2.3373646,3.574848 4.1430511,5.18514 6.5000001,5.796633 3.18861,0.82726 3.310922,5.543595 -3.240599,7.190289 C -0.21120104,67.538276 0,63.125012 0,54.5 Z M 31.350286,37.088327 c 0.725447,-3.198242 -0.57457,-5.480463 -6.985964,-12.26409 -5.813986,-6.151533 -6.33122,-7.639232 -3.535581,-10.169249 2.145144,-1.941329 6.793284,-2.121829 12.555239,-0.487552 C 37.631545,15.372182 44,19.446514 44,20.959223 c 0,0.471592 -1.978272,3.285977 -4.39616,6.254188 -2.417888,2.968211 -5.387156,6.946962 -6.598374,8.841668 -1.784393,2.791326 -2.098426,2.987361 -1.65518,1.033248 z" id="path4532-0" /> </g> </svg>',
         'B': '<?xml version="1.0" encoding="UTF-8" standalone="no"?> <svg class="icon" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.1" id="svg4495" width="45" height="70" viewBox="0 0 45 70" sodipodi:docname="BetaStrand7.svg" inkscape:version="0.92.1 r15371"> <sodipodi:namedview pagecolor="#ffffff" bordercolor="#666666" borderopacity="1" objecttolerance="10" gridtolerance="10" guidetolerance="10" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-width="1366" inkscape:window-height="705" id="namedview4578" showgrid="false" inkscape:zoom="3.55" inkscape:cx="-5.7746479" inkscape:cy="12.888617" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="svg4495" /> <defs id="defs4499"> <linearGradient inkscape:collect="always" id="linearGradient5127"> <stop style="stop-color:{color};stop-opacity:1;" offset="0" id="stop5123" /> <stop style="stop-color:{color};stop-opacity:0;" offset="1" id="stop5125" /> </linearGradient> <linearGradient inkscape:collect="always" xlink:href="#linearGradient5127" id="linearGradient5129" x1="33.239433" y1="47.042252" x2="32.676056" y2="28.450703" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.56226913,0,0,1.427842,9.2818426e-6,-14.904152)" /> </defs> <path style="fill:url(#linearGradient5129);fill-opacity:1;stroke-width:0.11613007" d="m 44.981539,55.539131 c 0,0 -29.982112,0.458457 -44.97182625,3.73e-4 L 0.00185154,28.709003 44.983394,28.709377 Z" id="path5048" inkscape:connector-curvature="0" /> <g id="g5102" transform="matrix(0.11590555,0,0,0.11586807,-8.4137034,16.569976)" style="opacity:0.22300002"> <path style="fill:#aaaaaa;fill-opacity:1" d="m 460.67892,336.32373 -388.087704,0.003 0.01578,-231.56081 388.087924,0.003 z" id="path5108" inkscape:connector-curvature="0" /> <path style="fill:#000000;fill-opacity:1" d="m 460.67892,336.32373 -388.004089,0.003 0.07584,-53.35919 388.087709,-0.003 z" id="path5106" inkscape:connector-curvature="0" /> </g> </svg>',
@@ -124,7 +125,9 @@ class VisualMap:
                         count += 1
                     table += f'<tr id="annotation_row"><td></td>{struc_annotation_row}<td></td></tr>'
                     table += f'<tr><td id="icon_row"></td>{structure_row}<td></td></tr>'
-                    table += f'<tr><td id="count_element_start">{last_count + 1}</td>{residue_row}<td id="count_element_end">{i + 1}</td></tr>'
+                    start_res_num = chain[last_count]['res_num']
+                    end_res_num = chain[i]['res_num']
+                    table += f'<tr><td id="count_element_start">{start_res_num}</td>{residue_row}<td id="count_element_end">{end_res_num}</td></tr>'
                     struc_annotation_row = ''
                     structure_row = ''
                     residue_row = ''
@@ -177,32 +180,56 @@ class VisualMap:
         structure_icon_png = f'<img class="icon" src="data:image/png;base64, {img.decode("utf-8")}" />'
         return structure_icon_png
     
+    def _fix_pdb_header(self, file_path):
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+        if not any(line.startswith('HEADER') for line in lines):
+            lines.insert(0, "HEADER    AUTO-GENERATED PDB FILE\n")
+        with open(file_path, 'w') as f:
+            f.writelines(lines)
+    
     def _get_dssp_output(self, pdb_name, file_path):
         '''
-        Private method that takes in the PDB name and path and returns the DSSP secondary structure assignments on the PDB file.
+        Private method that returns DSSP secondary structure assignments from a PDB or mmCIF file.
+        Handles PDB files without headers gracefully.
 
         Returns:
-            A dictionary containing chain ID as the key, the values are a list of dictionaries. Each dictionary item in the list represents a residue, along with its secondary structure assignments.
-            Example output: {"A": [{"chain": "A", "res_num": 1, "res_name": "A", "res_struc": "H"}, {}, {}]}
-
+            A dictionary containing chain IDs as keys and lists of residues with secondary structures as values.
+            Example: {"A": [{"chain": "A", "res_num": 1, "res_name": "A", "res_struc": "H"}, {}, {}]}
         '''
-        if file_path.split('.')[-1].lower() == 'pdb':
-            p = PDBParser(QUIET=True)
-        elif file_path.split('.')[-1].lower() == 'cif':
-            p = MMCIFParser(QUIET=True)
-        else:
-            return Exception('File type has to be either PDB or mmCIF')
-        
-        structure = p.get_structure(pdb_name, file_path)
-        model = structure[0]
-        dssp = DSSP(model, file_path)
 
+        # Parser selection based on file type
+        if file_path.lower().endswith('.pdb'):
+            parser = PDBParser(QUIET=True)
+        elif file_path.lower().endswith('.cif'):
+            parser = MMCIFParser(QUIET=True)
+        else:
+            raise Exception('File type must be either PDB or mmCIF')
+
+        # Load the structure
+        structure = parser.get_structure(pdb_name, file_path)
+        model = structure[0]
+
+        try:
+            dssp = DSSP(model, file_path)
+        except Exception as e:
+            self._fix_pdb_header(file_path)
+            try:
+                dssp = DSSP(model, file_path)
+            except Exception as e:
+                raise Exception(f"DSSP failed after header fix: {e}")
+
+        # Parse DSSP output into a structured dictionary
         structure_out = {}
-        for i in list(dssp.keys()):
-            res_dict = {'chain': i[0][0], 'res_num': i[1][1], 'res_name': dssp[i][1], 'res_struc': dssp[i][2]}
-            if i[0][0] not in structure_out:
-                structure_out[i[0][0]] = []
-            structure_out[i[0][0]].append(res_dict)
+        for key in dssp.keys():
+            chain_id = key[0][0]
+            res_dict = {
+                'chain': chain_id,
+                'res_num': key[1][1],
+                'res_name': dssp[key][1],
+                'res_struc': dssp[key][2]
+            }
+            structure_out.setdefault(chain_id, []).append(res_dict)
 
         return structure_out
     

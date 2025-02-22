@@ -72,7 +72,7 @@ def submit():
     if filename == '':
         if not os.path.isfile(f'uploads/{pdb_name}.cif'):
             try:
-                pdbl = PDBList()
+                pdbl = PDBList(server='https://files.wwpdb.org')
                 pdbl.retrieve_pdb_file(pdb_name, pdir='uploads', file_format='mmCif')
             except Exception as e:
                 return redirect(url_for('error_page'))

@@ -7,13 +7,14 @@ authors:
   - family-names: Alisaraie
     given-names: Laleh
     orcid: https://orcid.org/0000-0002-8874-5909
+
 title: ProS2Vi - a Python Tool for Visualizing Proteins Secondary Structure
-version: v1.0.1
+version: v1.0.2
 identifiers:
   - description: Zenodo archive of the ProS2Vi software.
     type: doi
-    value: 10.5281/zenodo.12554831
+    value: 10.5281/zenodo.12554830
   - description: Preprint of the manuscript describing the software and its use.
     type: doi
     value: 10.48550/arXiv.2408.03436
-date-released: 2024-06-26
+date-released: 2025-02-24

@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/816348234.svg)](https://doi.org/10.5281/zenodo.12554831)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12554830.svg)](https://doi.org/10.5281/zenodo.12554830)
 [![DOI](http://img.shields.io/badge/DOI-10.48550/arXiv.2408.03436-B31B1B.svg)](https://doi.org/10.48550/arXiv.2408.03436)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 

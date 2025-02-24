@@ -13,7 +13,7 @@ version: v1.0.2
 identifiers:
   - description: Zenodo archive of the ProS2Vi software.
     type: doi
-    value: 10.5281/zenodo.12554830
+    value: 10.5281/zenodo.14920354
   - description: Preprint of the manuscript describing the software and its use.
     type: doi
     value: 10.48550/arXiv.2408.03436

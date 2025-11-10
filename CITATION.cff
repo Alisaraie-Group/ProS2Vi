@@ -9,7 +9,7 @@ authors:
     orcid: https://orcid.org/0000-0002-8874-5909
 
 title: ProS2Vi - a Python Tool for Visualizing Proteins Secondary Structure
-version: v1.0.2
+version: v1.0.3
 identifiers:
   - description: Zenodo archive of the ProS2Vi software.
     type: doi

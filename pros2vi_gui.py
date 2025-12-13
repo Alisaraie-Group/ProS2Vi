@@ -43,7 +43,7 @@ def index():
         'S_COLOR': '#ffa500',
         'G_COLOR': '#ff0000',
         '-_COLOR': '#b7b7b7',
-        'P_COLOR': '#00CED1'
+        'P_COLOR': '#228B22'
     }
     return render_template('index.html')
 

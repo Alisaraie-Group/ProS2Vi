@@ -161,7 +161,8 @@ class VisualMap:
             I = self._convert_to_png(VisualMap.ICONS['I'].format(color=VisualMap.COLORS['I_COLOR'])),
             T = self._convert_to_png(VisualMap.ICONS['T'].format(color=VisualMap.COLORS['T_COLOR'])),
             S = self._convert_to_png(VisualMap.ICONS['S'].format(color=VisualMap.COLORS['S_COLOR'])),
-            P = self._convert_to_png(VisualMap.ICONS['P'].format(color=VisualMap.COLORS['P_COLOR']))
+            P = self._convert_to_png(VisualMap.ICONS['P'].format(color=VisualMap.COLORS['P_COLOR'])),
+            U = self._convert_to_png(VisualMap.ICONS['-'].format(color=VisualMap.COLORS['-_COLOR']))
         )
             
         return content

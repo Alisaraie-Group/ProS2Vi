@@ -43,7 +43,7 @@ def index():
         'S_COLOR': '#ffa500',
         'G_COLOR': '#ff0000',
         '-_COLOR': '#b7b7b7',
-        'P_COLOR': '#b7b7b7'
+        'P_COLOR': '#228B22'
     }
     return render_template('index.html')
 
@@ -113,9 +113,10 @@ def submit():
         visual.VisualMap.COLORS['T_COLOR'] = colors_parsed['turn']
     if 'bend' in colors_parsed.keys():
         visual.VisualMap.COLORS['S_COLOR'] = colors_parsed['bend']
+    if 'ppii' in colors_parsed.keys():
+        visual.VisualMap.COLORS['P_COLOR'] = colors_parsed['ppii']
     if 'unsolved' in colors_parsed.keys():
         visual.VisualMap.COLORS['-_COLOR'] = colors_parsed['unsolved']
-        visual.VisualMap.COLORS['P_COLOR'] = colors_parsed['unsolved']
 
     try:
         vs.generate_visual(residues_per_line=residues_per_line, output_image_name=output_image, dpi=dpi, pdf=generate_pdf)

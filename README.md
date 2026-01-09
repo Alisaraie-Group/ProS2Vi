@@ -31,7 +31,7 @@ Follow these steps to set up ProS<sup>2</sup>Vi on your system.
      ```bash
      sudo apt-get install python3
      ```
-  2. **Install DSSP**:
+  2. **Install DSSP** (version 4.x recommended for full PPII helix support):
      ```bash
      sudo apt-get install dssp
      ```
@@ -85,6 +85,54 @@ You can use ProS<sup>2</sup>Vi either through a command-line parser or via a Fla
       python visual.py pdb_folder/1fat.pdb -o output/test.png -d 200
       ```
       Here, `-o output/test.png` sets the output path and filename to `test.png`, and `-d 200` sets the DPI to 200.
+
+## DSSP Version Compatibility
+
+ProS<sup>2</sup>Vi fully supports **DSSP version 4**, which includes important updates:
+
+- **Poly-Proline II (PPII) Helix Detection**: DSSP v4 extends the secondary structure alphabet with code **'P'** to mark κ-helices (also known as Poly-Proline II helices), which are left-handed helical structures commonly found in protein loops and flexible regions.
+- **mmCIF Format Support**: Primary input/output format is now mmCIF (macromolecular Crystallographic Information File) for FAIR compliance.
+- **Legacy PDB Compatibility**: Maintains backward compatibility with traditional PDB file format.
+
+### Secondary Structure Codes
+
+ProS<sup>2</sup>Vi visualizes the following DSSP secondary structure assignments:
+
+| Code | Structure Type | Description |
+|------|----------------|-------------|
+| **H** | α-helix | Alpha helix (4-12 residues per turn) |
+| **G** | 3₁₀-helix | 3-10 helix (3 residues per turn) |
+| **I** | π-helix | Pi helix (5 residues per turn) |
+| **E** | β-strand | Extended strand in parallel/antiparallel β-sheet |
+| **B** | β-bridge | Isolated β-bridge residue |
+| **T** | Turn | Hydrogen bonded turn |
+| **S** | Bend | Bend (high curvature) |
+| **P** | PPII helix | Poly-Proline II helix / κ-helix (DSSP v4+) |
+| **-** | Coil/Loop | Unstructured coil or loop |
+
+**Note**: The 'P' code for PPII helices is a new feature in DSSP v4. These structures comprise approximately 1.9% of all residues in the PDB and are typically very short (half are ≤3 residues).
+
+### Checking Your DSSP Version
+
+To verify your DSSP installation supports PPII helices:
+
+```bash
+mkdssp --version  # Should show version 4.0.0 or higher
+```
+
+If you have an older version, update DSSP to benefit from PPII helix detection:
+
+```bash
+sudo apt-get update
+sudo apt-get install --upgrade dssp
+```
+
+Alternatively, install via conda-forge:
+
+```bash
+conda install -c conda-forge dssp
+```
+
       
 ## Citing ProS<sup>2</sup>Vi
 

@@ -123,6 +123,9 @@ def submit():
     except DecompressionBombError:
         return redirect(url_for('error_page_size'))
     except Exception as e:
+        print(f"Error generating visualization: {type(e).__name__}: {e}")
+        import traceback
+        traceback.print_exc()
         return redirect(url_for('error_page'))
 
     return redirect(url_for('result'))

@@ -60,6 +60,14 @@ div#legend_icon {
 #res td {
     padding: 0;
     width: 20px;
+    line-height: 0;
+}
+
+td#icon_row {
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+    vertical-align: middle;
 }
  
 .icon {
@@ -68,6 +76,19 @@ div#legend_icon {
     width: 20px;
     padding-top: 6px;
     padding-bottom: 6px;
+    display: block;
+    margin: 0;
+}
+
+/* Ensure inline SVGs render properly */
+td#icon_row svg,
+div#legend_icon svg {
+    display: block;
+    width: 20px;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
 }
 
 #wrapper {
@@ -82,17 +103,19 @@ div#legend_icon {
 }
 
 td#count_element_start {
-    font-size: 18px;
+    font-size: 18px !important;
     font-weight: normal;
     padding-right: 15px;
     width: 32px;
     text-align: left;
+    line-height: normal;
 }
 
 td#count_element_end {
-    font-size: 18px;
+    font-size: 18px !important;
     font-weight: normal;
     padding-left: 18px;
     width: 32px;
     text-align: right;
+    line-height: normal;
 }

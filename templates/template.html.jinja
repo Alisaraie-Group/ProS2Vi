@@ -8,48 +8,80 @@
 
         <div style='align-self: center; margin: 50px; font-size: 16px;'>
 
-            {{ residue_tables }} 
+            {% for chain in chains_data %}
+                <div class="chain">Chain {{ chain.chain_id }}:</div>
+                {% if chain.uniprot_id %}
+                    <div>Uniprot ID: {{ chain.uniprot_id }}</div>
+                {% endif %}
+                <table class="res">
+                    <tbody>
+                        {% for row in chain.rows %}
+                            <tr class="annotation-row">
+                                <td></td>
+                                {% for cell in row.annotation_cells %}
+                                    <td class="annotation" colspan="{{ cell.colspan }}">{{ cell.text }}</td>
+                                {% endfor %}
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="icon-row"></td>
+                                {% for cell in row.structure_cells %}
+                                    <td class="icon-row">{{ cell.icon }}</td>
+                                {% endfor %}
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="count-element-start">{{ row.start_res_num }}</td>
+                                {% for cell in row.residue_cells %}
+                                    <td class="res-row">{{ cell.name }}</td>
+                                {% endfor %}
+                                <td class="count-element-end">{{ row.end_res_num }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
 
         </div>
 
         <div id="legend">
 
         <div style="padding-bottom:20px;">Legend:</div>
-            <div id="legend_element">
-                <div id="legend_icon">{{ H }}</div>
-                <div id="legend_text">H Alpha helix (4-12)</div>
+            <div class="legend-element">
+                <div class="legend-icon">{{ H }}</div>
+                <div class="legend-text">H Alpha helix (4-12)</div>
             </div>
-            <div id="legend_element">
-                <div id="legend_icon">{{ I }}</div>
-                <div id="legend_text">I Pi helix</div>
+            <div class="legend-element">
+                <div class="legend-icon">{{ I }}</div>
+                <div class="legend-text">I Pi helix</div>
             </div>
-            <div id="legend_element">
-                <div id="legend_icon">{{ B }}</div>
-                <div id="legend_text">B Isolated beta-bridge residue</div>
+            <div class="legend-element">
+                <div class="legend-icon">{{ B }}</div>
+                <div class="legend-text">B Isolated beta-bridge residue</div>
             </div>
-            <div id="legend_element">
-                <div id="legend_icon">{{ T }}</div>
-                <div id="legend_text">T Turn</div>
+            <div class="legend-element">
+                <div class="legend-icon">{{ T }}</div>
+                <div class="legend-text">T Turn</div>
             </div>
-            <div id="legend_element">
-                <div id="legend_icon">{{ E }}</div>
-                <div id="legend_text">E Strand</div>
+            <div class="legend-element">
+                <div class="legend-icon">{{ E }}</div>
+                <div class="legend-text">E Strand</div>
             </div>
-            <div id="legend_element">
-                <div id="legend_icon">{{ S }}</div>
-                <div id="legend_text">S Bend</div>
+            <div class="legend-element">
+                <div class="legend-icon">{{ S }}</div>
+                <div class="legend-text">S Bend</div>
             </div>
-            <div id="legend_element">
-                <div id="legend_icon">{{ G }}</div>
-                <div id="legend_text">G 3-10 helix</div>
+            <div class="legend-element">
+                <div class="legend-icon">{{ G }}</div>
+                <div class="legend-text">G 3-10 helix</div>
             </div>
-            <div id="legend_element">
-                <div id="legend_icon">{{ P }}</div>
-                <div id="legend_text">P Poly-Proline II (PPII) helix / κ-helix</div>
+            <div class="legend-element">
+                <div class="legend-icon">{{ P }}</div>
+                <div class="legend-text">P Poly-Proline II (PPII) helix / κ-helix</div>
             </div>
-            <div id="legend_element">
-                <div id="legend_icon">{{ U }}</div>
-                <div id="legend_text">Unsolved</div>
+            <div class="legend-element">
+                <div class="legend-icon">{{ U }}</div>
+                <div class="legend-text">Unsolved</div>
             </div>
         </div>
 

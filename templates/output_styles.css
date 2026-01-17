@@ -14,14 +14,13 @@ body {
     font-size: 20px;
 }
 
-#res {
+.res {
     border-collapse: collapse;
     border: none;
-    padding: 0; 
+    padding: 0;
     margin: 0;
-    text-align: center; 
+    text-align: center;
     vertical-align: middle;
-    border: 0;
     font-weight: bold;
     font-size: 16px;
 }
@@ -31,11 +30,11 @@ body {
     margin: 50px;
 }
 
-div#legend_element {
+div.legend-element {
     display: inline-block;
 }
 
-div#legend_text {
+div.legend-text {
     font-size: 18px;
     padding-left: 0px;
     padding-right: 70px;
@@ -43,33 +42,33 @@ div#legend_text {
     vertical-align: middle;
 }
 
-div#legend_icon {
+div.legend-icon {
     padding-left: 0px;
     padding-right: 15px;
     display: inline-block;
     vertical-align: middle;
 }
 
-#chain {
-    font-size: 20px; 
-    padding-bottom: 5px; 
-    padding-top: 30px; 
+.chain {
+    font-size: 20px;
+    padding-bottom: 5px;
+    padding-top: 30px;
     font-weight: bold;
 }
- 
-#res td {
+
+.res td {
     padding: 0;
     width: 20px;
     line-height: 0;
 }
 
-td#icon_row {
+td.icon-row {
     padding: 0;
     margin: 0;
     line-height: 0;
     vertical-align: middle;
 }
- 
+
 .icon {
     border: 0;
     font-size: 0;
@@ -81,8 +80,8 @@ td#icon_row {
 }
 
 /* Ensure inline SVGs render properly */
-td#icon_row svg,
-div#legend_icon svg {
+td.icon-row svg,
+div.legend-icon svg {
     display: block;
     width: 20px;
     height: auto;
@@ -96,13 +95,13 @@ div#legend_icon svg {
     display:inline-block
 }
 
-#annotation_row td {
+.annotation-row td {
     font-size: 11px;
     padding-top: 20px;
     max-width: 20px;
 }
 
-td#count_element_start {
+td.count-element-start {
     font-size: 18px !important;
     font-weight: normal;
     padding-right: 15px;
@@ -111,7 +110,7 @@ td#count_element_start {
     line-height: normal;
 }
 
-td#count_element_end {
+td.count-element-end {
     font-size: 18px !important;
     font-weight: normal;
     padding-left: 18px;

@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  pros2vi:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./output:/app/output    # Persist generated images
+      - ./uploads:/app/uploads  # Persist uploaded files
+    environment:
+      - FLASK_ENV=production

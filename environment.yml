@@ -1,0 +1,48 @@
+name: pros2vi
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Python version
+  - python=3.11
+
+  # Core bioinformatics and system tools
+  - dssp>=4.0
+  - poppler
+  
+  # Note: wkhtmltopdf is NOT included here intentionally
+  # The conda-forge version (0.12.4) has poor SVG rendering support
+  # Install system wkhtmltopdf instead (0.12.6+) for proper icon display:
+  #   Ubuntu/Debian: sudo apt-get install -y wkhtmltopdf
+  #   macOS: brew install wkhtmltopdf
+  
+  # Font and rendering support (improves SVG/image rendering)
+  - freetype
+  - fontconfig
+  - libpng
+  - libjpeg-turbo
+  - cairo
+
+  # Package manager
+  - pip
+
+  # Install all Python packages via pip for better reliability
+  - pip:
+      - biopython==1.83
+      - numpy==1.26.4
+      - flask==3.0.3
+      - jinja2==3.1.4
+      - werkzeug==3.0.3
+      - click==8.1.7
+      - markupsafe==2.1.5
+      - itsdangerous==2.2.0
+      - blinker==1.8.2
+      - requests==2.32.3
+      - certifi>=2024.6.2
+      - charset-normalizer==3.3.2
+      - idna==3.7
+      - urllib3==2.2.1
+      - imgkit==1.2.3
+      - pdfkit==1.0.0
+      - pdf2image==1.17.0
+      - pillow==10.4.0

@@ -150,5 +150,8 @@ def open_browser():
       webbrowser.open_new("http://127.0.0.1:3000")
 
 if __name__ == "__main__":
-      Timer(1, open_browser).start()
-      app.run(port=3000)
+      # Skip browser auto-open in Docker (when DOCKER_ENV is set)
+      if not os.environ.get('DOCKER_ENV'):
+          Timer(1, open_browser).start()
+      # Bind to 0.0.0.0 to allow connections from outside container
+      app.run(host='0.0.0.0', port=3000)

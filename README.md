@@ -4,7 +4,39 @@
 
 # ProS<sup>2</sup>Vi - a Python Tool for Visualizing Proteins Secondary Structure
 
-## Setup Instructions
+## Quick Start with Docker (Recommended)
+
+The easiest way to run ProS<sup>2</sup>Vi is using Docker. This works on Windows, macOS, and Linux without needing to install Python, DSSP, or other dependencies.
+
+### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+### Run ProS<sup>2</sup>Vi
+```bash
+docker run -p 3000:3000 alisaraiegroup/pros2vi
+```
+
+Then open http://localhost:3000 in your browser.
+
+### Save Output Files Locally
+To persist generated images to your local machine:
+```bash
+docker run -p 3000:3000 -v $(pwd)/output:/app/output alisaraiegroup/pros2vi
+```
+Generated images will be saved to the `output/` folder in your current directory.
+
+### Build from Source (Optional)
+If you prefer to build the Docker image yourself:
+```bash
+git clone https://github.com/Alisaraie-Group/ProS2Vi.git
+cd ProS2Vi
+docker build -t pros2vi .
+docker run -p 3000:3000 pros2vi
+```
+
+---
+
+## Manual Setup Instructions
 
 Follow these steps to set up ProS<sup>2</sup>Vi on your system.
 

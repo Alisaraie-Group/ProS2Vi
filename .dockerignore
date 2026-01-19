@@ -1,0 +1,35 @@
+# Version control
+.git/
+.gitignore
+
+# Development files
+.claude/
+.env
+*.md
+
+# Conda setup (not needed in Docker)
+environment.yml
+setup_conda.sh
+
+# Python cache
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# Output and data files
+output/
+uploads/
+*.pdb
+*.cif
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

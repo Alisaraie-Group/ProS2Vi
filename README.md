@@ -12,8 +12,19 @@ The easiest way to run ProS<sup>2</sup>Vi is using Docker. This works on Windows
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ### Run ProS<sup>2</sup>Vi
+
+**Quick Start:**
 ```bash
 docker run -p 3000:3000 alisaraiegroup/pros2vi
+```
+
+Then open http://localhost:3000 in your browser.
+
+**Using Docker Compose:**
+```bash
+git clone https://github.com/Alisaraie-Group/ProS2Vi.git
+cd ProS2Vi
+docker-compose up
 ```
 
 Then open http://localhost:3000 in your browser.
@@ -27,6 +38,8 @@ Generated images will be saved to the `output/` folder in your current directory
 
 ### Build from Source (Optional)
 If you prefer to build the Docker image yourself:
+
+**Using Docker:**
 ```bash
 git clone https://github.com/Alisaraie-Group/ProS2Vi.git
 cd ProS2Vi
@@ -34,89 +47,183 @@ docker build -t pros2vi .
 docker run -p 3000:3000 pros2vi
 ```
 
+**Using Docker Compose:**
+```bash
+git clone https://github.com/Alisaraie-Group/ProS2Vi.git
+cd ProS2Vi
+docker-compose up --build
+```
+
 ---
 
-## Manual Setup Instructions
+## Alternative Setup Methods
 
-Follow these steps to set up ProS<sup>2</sup>Vi on your system.
+If you prefer not to use Docker, you can set up ProS<sup>2</sup>Vi using either Conda or Python's venv.
 
-### Clone the Repository
+### Option 1: Conda Setup
 
-1. **Clone the GitHub Repository**: Open your terminal and clone the repository using the following command:
-   ```bash
-   git clone https://github.com/Alisaraie-Group/ProS2Vi.git
-   ```
+Works on Linux, macOS, and Windows (via WSL).
 
-2. **Navigate to the Project Directory**: Change to the directory containing the cloned repository:
-   ```bash
-   cd ProS2Vi
-   ```
+#### Prerequisites
+- [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download)
 
-### Prerequisites
+#### Installation
 
-1. **Preferred Operating System**: ProS<sup>2</sup>Vi needs to be run on a Linux system. For Windows users, you need to install Windows Subsystem for Linux (WSL) from the [Microsoft website](https://docs.microsoft.com/en-us/windows/wsl/install).
-2. **Installation Methods**: You can install all the required components manually or automatically using the provided bash script.
-2. **Installation Methods**: You can install all the required components manually or automatically using the provided shell script.
+**Method 1: Using mamba (Recommended - faster and more reliable)**
 
-- **Manual Installation**:
-  1. **Install Python**: Ensure Python is installed on your system.
-     ```bash
-     sudo apt-get install python3
-     ```
-  2. **Install DSSP** (version 4.x recommended for full PPII helix support):
-     ```bash
-     sudo apt-get install dssp
-     ```
-  3. **Install wkhtmltopdf**:
-     ```bash
-     sudo apt-get install wkhtmltopdf
-     ```
-  4. **Set Up a Virtual Environment**:
-     ```bash
-     python -m venv venv
-     source venv/bin/activate
-     ```
-  5. **Install Python Requirements**:
-     ```bash
-     pip install -r requirements.txt
-     ```
+```bash
+# Clone the repository
+git clone https://github.com/Alisaraie-Group/ProS2Vi.git
+cd ProS2Vi
 
-- **Automatic Installation**: Run the `install_dependencies.sh` script that check ands install all dependencies including Python, DSSP, wkhtmltopdf, and then creates a virtual environment and installs the required Python libraries:
-  ```bash
-  chmod +x install_dependencies.sh
-  ./install_dependencies.sh
-  ```
+# Install mamba (if not already installed)
+conda install -n base -c conda-forge mamba -y
+
+# Create the environment with mamba
+mamba env create -f environment.yml
+
+# Activate the environment
+conda activate pros2vi
+
+# Install system wkhtmltopdf (required for image generation)
+# Ubuntu/Debian:
+sudo apt-get install -y wkhtmltopdf
+# macOS:
+# brew install wkhtmltopdf
+```
+
+**Method 2: Using conda directly**
+
+```bash
+# Clone the repository
+git clone https://github.com/Alisaraie-Group/ProS2Vi.git
+cd ProS2Vi
+
+# Create the environment
+conda env create -f environment.yml
+
+# Activate the environment
+conda activate pros2vi
+
+# Install system wkhtmltopdf (required for image generation)
+# Ubuntu/Debian:
+sudo apt-get install -y wkhtmltopdf
+# macOS:
+# brew install wkhtmltopdf
+```
+
+**Method 3: If you encounter network issues**
+
+Create a minimal conda environment and install packages via pip:
+
+```bash
+# Create environment with Python and system dependencies
+conda create -n pros2vi python=3.11 -y
+conda activate pros2vi
+
+# Install DSSP and poppler via conda
+conda install -c conda-forge dssp poppler -y
+
+# Install system wkhtmltopdf (for proper SVG/icon rendering)
+# Ubuntu/Debian:
+sudo apt-get install -y wkhtmltopdf
+# macOS:
+# brew install wkhtmltopdf
+
+# Install Python packages via pip
+pip install -r requirements.txt
+```
+
+> **Important**: The conda-forge version of `wkhtmltopdf` (0.12.4) has limited SVG rendering support which causes icons to appear blank. Install the system version (0.12.6+) for proper icon display.
+
+### Option 2: Python venv Setup
+
+Works on Linux, macOS, and Windows with Python 3.11 installed.
+
+#### Prerequisites
+- Python 3.11 or higher
+- System package manager (apt, brew, etc.)
+
+#### Installation
+
+**Ubuntu/Debian:**
+
+```bash
+# Clone the repository
+git clone https://github.com/Alisaraie-Group/ProS2Vi.git
+cd ProS2Vi
+
+# Install system dependencies
+sudo apt-get update
+sudo apt-get install -y dssp poppler-utils wkhtmltopdf
+
+# Create and activate virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install Python packages
+pip install -r requirements.txt
+```
+
+**macOS:**
+
+```bash
+# Clone the repository
+git clone https://github.com/Alisaraie-Group/ProS2Vi.git
+cd ProS2Vi
+
+# Install system dependencies via Homebrew
+brew install dssp poppler wkhtmltopdf
+
+# Create and activate virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install Python packages
+pip install -r requirements.txt
+```
+
+**Windows (WSL):**
+
+Follow the Ubuntu/Debian instructions above in your WSL environment.
 
 ### Running ProS<sup>2</sup>Vi
 
-You can use ProS<sup>2</sup>Vi either through a command-line parser or via a Flask-based GUI. Follow the detailed steps below for each method.
+> **Note**: Before running ProS<sup>2</sup>Vi, ensure your environment is activated:
+> - For Conda: `conda activate pros2vi`
+> - For venv: `source venv/bin/activate` (Linux/macOS) or `venv\Scripts\activate` (Windows)
 
-### Using the Flask-based GUI
+#### Using the Flask-based GUI
 
-1. **Run Main Script**: Execute `python3 pros2vi_gui.py` from the terminal. This will launch a browser window.
-2. **Add the Protein Structure**: In the browser, upload your PDB file or enter the PDB code.
-3. **Optional Arguments**: Enter values in the optional input fields if needed.
-4. **Submit and Visualize**: Press `Submit` to create the visualization. The visualization will be saved in the main directory.
+1. **Start the GUI**:
+   ```bash
+   python pros2vi_gui.py
+   ```
+   This will launch a browser window at http://localhost:3000.
 
-### Using the Command-line Parser
+2. **Add the Protein Structure**: Upload your PDB/mmCIF file or enter the PDB code.
 
-1. **Run the Script**: Provide the path to the PDF/mmCIF file and optional arguments. Example:
-    ```bash
-    python3 pros2vi_cli.py pdb_folder/1fat.pdb
-    ```
+3. **Configure Options**: Enter values in the optional input fields if needed.
 
-2. **Specify Additional Arguments**: Use positional arguments for additional options. Example:
-    - **30 Residues per Line and PDF Output**:
-      ```bash
-      python visual.py pdb_folder/1fat.pdb -r 30 -pdf
-      ```
-      Here, `-r 30` sets 30 residues per line, and `-pdf` generates a PDF output.
+4. **Submit and Visualize**: Press `Submit` to create the visualization. Output files are saved in the `output/` directory.
 
-    - **200 DPI Resolution and PNG Output**:
-      ```bash
-      python visual.py pdb_folder/1fat.pdb -o output/test.png -d 200
-      ```
-      Here, `-o output/test.png` sets the output path and filename to `test.png`, and `-d 200` sets the DPI to 200.
+#### Using the Command-line Interface
+
+1. **Basic Usage**: Provide the path to the PDB/mmCIF file:
+   ```bash
+   python pros2vi_cli.py pdb_folder/1fat.pdb
+   ```
+
+2. **With Options**:
+   - **30 Residues per Line and PDF Output**:
+     ```bash
+     python pros2vi_cli.py pdb_folder/1fat.pdb -r 30 -pdf
+     ```
+
+   - **200 DPI Resolution and PNG Output**:
+     ```bash
+     python pros2vi_cli.py pdb_folder/1fat.pdb -o output/test.png -d 200
+     ```
 
 ## DSSP Version Compatibility
 
@@ -152,18 +259,7 @@ To verify your DSSP installation supports PPII helices:
 mkdssp --version  # Should show version 4.0.0 or higher
 ```
 
-If you have an older version, update DSSP to benefit from PPII helix detection:
-
-```bash
-sudo apt-get update
-sudo apt-get install --upgrade dssp
-```
-
-Alternatively, install via conda-forge:
-
-```bash
-conda install -c conda-forge dssp
-```
+**Note**: The Docker image, Conda environment, and system packages (via apt/brew) all include DSSP v4+ by default, so no manual installation is needed.
 
       
 ## Citing ProS<sup>2</sup>Vi

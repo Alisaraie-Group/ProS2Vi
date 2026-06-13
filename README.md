@@ -270,11 +270,11 @@ If you use ProS<sup>2</sup>Vi in academic work, please cite the software as
 @software{qasim_2024_12554831,
   author       = {Qasim, Muhammad Luckman and
                   Alisaraie, Laleh},
-  title        = {Alisaraie-Group/ProS2Vi: ProS2Vi 1.0.3},
+  title        = {Alisaraie-Group/ProS2Vi: ProS2Vi 1.1.0},
   month        = jun,
   year         = 2024,
   publisher    = {Zenodo},
-  version      = {v1.0.3},
+  version      = {v1.1.0},
   doi          = {10.5281/zenodo.12554831},
   url          = {https://doi.org/10.5281/zenodo.12554831}
 }

@@ -1,4 +1,4 @@
-#   Copyright 2024-2025 Muhammad Luckman Qasim,  Laleh Alisaraie
+#   Copyright 2024-2026 Muhammad Luckman Qasim, Laleh Alisaraie
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ def index():
         'S_COLOR': '#ffa500',
         'G_COLOR': '#ff0000',
         '-_COLOR': '#b7b7b7',
-        'P_COLOR': '#b7b7b7'
+        'P_COLOR': '#228B22'
     }
     return render_template('index.html')
 
@@ -113,15 +113,19 @@ def submit():
         visual.VisualMap.COLORS['T_COLOR'] = colors_parsed['turn']
     if 'bend' in colors_parsed.keys():
         visual.VisualMap.COLORS['S_COLOR'] = colors_parsed['bend']
+    if 'ppii' in colors_parsed.keys():
+        visual.VisualMap.COLORS['P_COLOR'] = colors_parsed['ppii']
     if 'unsolved' in colors_parsed.keys():
         visual.VisualMap.COLORS['-_COLOR'] = colors_parsed['unsolved']
-        visual.VisualMap.COLORS['P_COLOR'] = colors_parsed['unsolved']
 
     try:
         vs.generate_visual(residues_per_line=residues_per_line, output_image_name=output_image, dpi=dpi, pdf=generate_pdf)
     except DecompressionBombError:
         return redirect(url_for('error_page_size'))
     except Exception as e:
+        print(f"Error generating visualization: {type(e).__name__}: {e}")
+        import traceback
+        traceback.print_exc()
         return redirect(url_for('error_page'))
 
     return redirect(url_for('result'))
@@ -146,5 +150,8 @@ def open_browser():
       webbrowser.open_new("http://127.0.0.1:3000")
 
 if __name__ == "__main__":
-      Timer(1, open_browser).start()
-      app.run(port=3000)
+      # Skip browser auto-open in Docker (when DOCKER_ENV is set)
+      if not os.environ.get('DOCKER_ENV'):
+          Timer(1, open_browser).start()
+      # Bind to 0.0.0.0 to allow connections from outside container
+      app.run(host='0.0.0.0', port=3000)

@@ -3,251 +3,596 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProS2Vi</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>ProS2Vi - Protein Secondary Structure Visualization</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #f0f2f5;
             font-family: 'Courier New', Courier, monospace;
-            padding-top: 50px;
+            min-height: 100vh;
+            padding: 40px 20px;
         }
-        .container {
-            max-width: 670px;
+        .main-container {
+            max-width: 720px;
             margin: auto;
             background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
-        h2 {
+        .app-title {
             text-align: center;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
+            margin-bottom: 8px;
             font-weight: bold;
         }
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
-        #processing {
-            display: none;
+        .app-subtitle {
             text-align: center;
-            margin-top: 20px;
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 28px;
         }
-        .tab {
-            overflow: hidden;
-            border: 1px solid #ccc;
-            background-color: #f1f1f1;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
+        .nav-tabs {
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 24px;
         }
-        .tab button {
+        .nav-tabs .nav-item {
             flex: 1;
             text-align: center;
-            padding: 14px 0;
+        }
+        .nav-tabs .nav-link {
             border: none;
-            outline: none;
+            color: #6c757d;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 0;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .nav-tabs .nav-link:hover {
+            color: #0d6efd;
+            border: none;
+        }
+        .nav-tabs .nav-link.active {
+            color: #0d6efd;
+            background: none;
+            border: none;
+            border-bottom: 2px solid #0d6efd;
+            margin-bottom: -2px;
+        }
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 14px;
+            border: 1px solid #dee2e6;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+        }
+        .form-text {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .section-divider {
+            border-top: 1px solid #e9ecef;
+            margin: 24px 0;
+        }
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        /* Drag and drop zone */
+        .drop-zone {
+            border: 2px dashed #dee2e6;
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
             cursor: pointer;
-            transition: 0.3s;
-            font-size: 17px;
-            background-color: inherit;
+            transition: all 0.2s;
+            background-color: #fafbfc;
         }
-        .tab button:hover {
-            background-color: #ddd;
+        .drop-zone:hover, .drop-zone.drag-over {
+            border-color: #0d6efd;
+            background-color: #f0f7ff;
         }
-        .tab button.active {
-            background-color: #ccc;
+        .drop-zone.has-file {
+            border-color: #198754;
+            background-color: #f0fff4;
         }
-        .tabcontent {
+        .drop-zone-icon {
+            font-size: 32px;
+            color: #6c757d;
+            margin-bottom: 12px;
+        }
+        .drop-zone.has-file .drop-zone-icon {
+            color: #198754;
+        }
+        .drop-zone-text {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        .drop-zone-filename {
+            font-weight: 600;
+            color: #198754;
+            margin-top: 8px;
+        }
+
+        /* Color buttons */
+        .color-btn-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        @media (max-width: 576px) {
+            .color-btn-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .color-btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .color-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .color-btn:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+        /* Submit button */
+        .btn-submit {
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+        .btn-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+        }
+
+        /* Processing overlay */
+        .processing-overlay {
             display: none;
-            padding: 6px 12px;
-            border: 1px solid #ccc;
-            border-top: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .processing-overlay.show {
+            display: flex;
+        }
+        .processing-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #e9ecef;
+            border-top-color: #0d6efd;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .processing-text {
+            margin-top: 16px;
+            font-size: 16px;
+            color: #6c757d;
+        }
+
+        /* Optional badge */
+        .optional-badge {
+            font-size: 11px;
+            font-weight: normal;
+            color: #6c757d;
+            margin-left: 4px;
+        }
+
+        /* Toast notification */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+        }
+        .toast {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            min-width: 320px;
+            max-width: 420px;
+        }
+        .toast-error .toast-header {
+            background-color: #f8d7da;
+            color: #842029;
+            border-radius: 10px 10px 0 0;
+            border-bottom: 1px solid #f5c2c7;
+        }
+        .toast-error .toast-header i {
+            color: #dc3545;
+        }
+        .toast-body {
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+
+        /* Input error state */
+        .form-control.is-invalid,
+        .drop-zone.is-invalid {
+            border-color: #dc3545;
+        }
+        .drop-zone.is-invalid {
+            background-color: #fff5f5;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2 style="font-style: italic;">ProS<sup>2</sup>Vi</h2>
-        <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'Tab1')">Look-up PDB file</button>
-            <button class="tablinks" onclick="openTab(event, 'Tab2')">Upload PDB File</button>
-        </div>
+    <div class="main-container">
+        <h2 class="app-title">ProS<sup>2</sup>Vi</h2>
+        <p class="app-subtitle">Protein Secondary Structure Visualization</p>
 
-        <form id="myForm" method="post" action="/submit" enctype="multipart/form-data">
-            <div id="Tab1" class="tabcontent">
-                <div class="form-group">
-                    <label for="pdb_name">PDB Code:</label>
-                    <input type="text" class="form-control" id="pdb_name" name="pdb_name" required>
-                </div>
-            </div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="lookup-tab" data-bs-toggle="tab" data-bs-target="#lookup-pane" type="button" role="tab">
+                    <i class="bi bi-search me-1"></i> PDB Lookup
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload-pane" type="button" role="tab">
+                    <i class="bi bi-upload me-1"></i> Upload File
+                </button>
+            </li>
+        </ul>
 
-            <div id="Tab2" class="tabcontent">
-                <div class="form-group">
-                    <label for="file">Select PDB file:</label>
-                    <input type="file" class="form-control-file" id="file" name="file" required>
+        <form id="mainForm" method="post" action="/submit" enctype="multipart/form-data">
+            <div class="tab-content">
+                <!-- PDB Lookup Tab -->
+                <div class="tab-pane fade show active" id="lookup-pane" role="tabpanel">
+                    <div class="mb-3">
+                        <label for="pdb_name" class="form-label">PDB Code</label>
+                        <input type="text" class="form-control" id="pdb_name" name="pdb_name"
+                               placeholder="e.g., 1MBO, 2IOC, 4HHB" maxlength="4"
+                               style="text-transform: uppercase;">
+                        <div class="form-text">Enter a 4-character PDB identifier to fetch from RCSB database</div>
+                    </div>
                 </div>
-                <p style="font-size: 14px; opacity: 0.8;">Note: The fields below are optional and will be omitted from the final output if no input text is provided. <br>
-                If you want the output image to contain Uniprot IDs, please enter the PDB Code.</p>
-                <div class="form-group">
-                    <label for="title">Title/PDB Code:</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="subtitle">Subtitle:</label>
-                    <input type="text" class="form-control" id="subtitle" name="subtitle" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="scientific_name">Scientific Name:</label>
-                    <input type="text" class="form-control" id="scientific_name" name="scientific_name" placeholder="">
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label for="residues_per_line">Residues per line:</label>
-                <input type="text" class="form-control" id="residues_per_line" name="residues_per_line" placeholder="Default 50">
-            </div>
-            <div class="form-group">
-                <label for="dpi">DPI:</label>
-                <input type="text" class="form-control" id="dpi" name="dpi" placeholder="Default 100">
-                <p style="font-size: 14px; opacity: 0.8;">Note: Changing DPI might increase the processing time significantly, depending on the structure size.</p>
-            </div>
-            <div class="form-group">
-                <label for="output_image">Output image name:</label>
-                <input type="text" class="form-control" id="output_image" name="output_image" placeholder="Default filename.png">
-            </div>
-            <div class="form-group">
-                <label for="element_selector">Change icon colors:</label>
-                <div id="element_buttons" style="text-align: center;">
-                    <button type="button" class="btn btn-outline-primary" style="background-color: #0000ff; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('helix')" data-element="helix">α-helix</button>
-                    <button type="button" class="btn btn-outline-primary" style="background-color: #228B22; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('beta')" data-element="beta">β-bridge</button>
-                    <button type="button" class="btn btn-outline-primary" style="background-color: #ff0000; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('strand')" data-element="strand">β-strands</button>
-                    <button type="button" class="btn btn-outline-primary" style="background-color: #ff00ff; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('pihelix')" data-element="pihelix">π-helix</button>
-                    <button type="button" class="btn btn-outline-primary" style="background-color: #ff0000; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('310helix')" data-element="310helix">3<sub>10</sub>-helix</button>
-                    <button type="button" class="btn btn-outline-primary" style="background-color: #ffff00; color: #000000; margin-bottom: 10px;" onclick="selectElement('turn')" data-element="turn">Turn</button>
-                    <button type="button" class="btn btn-outline-primary" style="background-color: #ffa500; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('bend')" data-element="bend">Bend</button>
-                    <button type="button" class="btn btn-outline-primary" style="background-color: #b7b7b7; color: #ffffff; margin-bottom: 10px;" onclick="selectElement('unsolved')" data-element="unsolved">Unsolved</button>
-                </div>
-            </div>
-            <div class="form-group" style="display: none;">
-                <label for="element_color">New Color:</label>
-                <input type="color" class="form-control" id="element_color" name="element_color">
-            </div>
-            <div class="form-group">
-                <label for="checkbox">PDF:</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="checkbox" name="checkbox">
-                    <label class="form-check-label" for="checkbox">
-                        Generate PDF
-                    </label>
+                <!-- Upload File Tab -->
+                <div class="tab-pane fade" id="upload-pane" role="tabpanel">
+                    <div class="mb-3">
+                        <label class="form-label">PDB/mmCIF File</label>
+                        <div class="drop-zone" id="dropZone">
+                            <input type="file" id="file" name="file" accept=".pdb,.cif" hidden>
+                            <div class="drop-zone-icon"><i class="bi bi-file-earmark-arrow-up"></i></div>
+                            <div class="drop-zone-text">
+                                Drag and drop your file here, or <span class="text-primary">browse</span>
+                            </div>
+                            <div class="drop-zone-filename" id="fileName"></div>
+                        </div>
+                        <div class="form-text mt-2">Accepted formats: .pdb, .cif</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="title" class="form-label">Title / PDB Code <span class="optional-badge">(optional)</span></label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Display title">
+                            <div class="form-text">For UniProt IDs, enter the PDB code</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="subtitle" class="form-label">Subtitle <span class="optional-badge">(optional)</span></label>
+                            <input type="text" class="form-control" id="subtitle" name="subtitle" placeholder="Additional description">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="scientific_name" class="form-label">Scientific Name <span class="optional-badge">(optional)</span></label>
+                        <input type="text" class="form-control" id="scientific_name" name="scientific_name" placeholder="e.g., Homo sapiens">
+                    </div>
                 </div>
             </div>
 
-            <button id="submit-button" type="button" class="btn btn-primary btn-block" onclick="submitForm()">Submit</button>
-            <div id="processing">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Processing...</span>
+            <div class="section-divider"></div>
+            <div class="section-title">Output Settings</div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="residues_per_line" class="form-label">Residues per Line</label>
+                    <input type="number" class="form-control" id="residues_per_line" name="residues_per_line"
+                           placeholder="50" min="10" max="200" value="">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="dpi" class="form-label">Image Quality (DPI)</label>
+                    <select class="form-select" id="dpi" name="dpi">
+                        <option value="100">Web / Preview (100 DPI)</option>
+                        <option value="300" selected>Publication Print (300 DPI)</option>
+                        <option value="600">High Quality Print (600 DPI)</option>
+                        <option value="custom">Custom...</option>
+                    </select>
+                    <input type="number" class="form-control mt-2" id="dpi_custom" name="dpi_custom"
+                           placeholder="Enter custom DPI" min="72" max="1200" style="display: none;">
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="output_image" class="form-label">Output Filename <span class="optional-badge">(optional)</span></label>
+                    <input type="text" class="form-control" id="output_image" name="output_image" placeholder="Auto-generated if empty">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Additional Output</label>
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" id="checkbox" name="checkbox">
+                        <label class="form-check-label" for="checkbox">Also generate PDF</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+            <div class="section-title">Structure Colors</div>
+
+            <div class="color-btn-grid" id="element_buttons">
+                <button type="button" class="color-btn" style="background-color: #0000ff; color: #ffffff;"
+                        onclick="selectElement('helix')" data-element="helix">H: Alpha-helix</button>
+                <button type="button" class="color-btn" style="background-color: #228B22; color: #ffffff;"
+                        onclick="selectElement('beta')" data-element="beta">B: Beta-bridge</button>
+                <button type="button" class="color-btn" style="background-color: #ff0000; color: #ffffff;"
+                        onclick="selectElement('strand')" data-element="strand">E: Beta-strand</button>
+                <button type="button" class="color-btn" style="background-color: #ff00ff; color: #ffffff;"
+                        onclick="selectElement('pihelix')" data-element="pihelix">I: Pi-helix</button>
+                <button type="button" class="color-btn" style="background-color: #ff0000; color: #ffffff;"
+                        onclick="selectElement('310helix')" data-element="310helix">G: 3<sub>10</sub>-helix</button>
+                <button type="button" class="color-btn" style="background-color: #ffff00; color: #000000;"
+                        onclick="selectElement('turn')" data-element="turn">T: Turn</button>
+                <button type="button" class="color-btn" style="background-color: #ffa500; color: #000000;"
+                        onclick="selectElement('bend')" data-element="bend">S: Bend</button>
+                <button type="button" class="color-btn" style="background-color: #228B22; color: #ffffff;"
+                        onclick="selectElement('ppii')" data-element="ppii">P: PPII-helix</button>
+                <button type="button" class="color-btn" style="background-color: #b7b7b7; color: #ffffff;"
+                        onclick="selectElement('unsolved')" data-element="unsolved">U: Unknown</button>
+            </div>
+            <input type="color" id="element_color" name="element_color" style="position: absolute; opacity: 0; pointer-events: none;">
+            <div class="form-text mt-2">Click any structure type to change its color</div>
+
+            <div class="section-divider"></div>
+
+            <button type="button" class="btn btn-primary btn-submit w-100" onclick="submitForm()">
+                <i class="bi bi-image me-2"></i>Generate Visualization
+            </button>
         </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Processing Overlay -->
+    <div class="processing-overlay" id="processingOverlay">
+        <div class="processing-spinner"></div>
+        <div class="processing-text">Generating visualization...</div>
+        <div class="form-text mt-2">This may take a moment for large structures</div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container">
+        <div id="errorToast" class="toast toast-error" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bi bi-exclamation-circle me-2"></i>
+                <strong class="me-auto">Validation Error</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toastMessage">
+                Error message here
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        var elementColors = {}; 
+        var elementColors = {};
+        var selectedElement = null;
+        var errorToast = null;
 
-        function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
-
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementsByClassName("tablinks")[0].click();
+        // Initialize toast on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            errorToast = new bootstrap.Toast(document.getElementById('errorToast'), {
+                autohide: true,
+                delay: 5000
+            });
         });
 
-        function submitForm() {
-            var pdbName = document.getElementById('pdb_name').value;
-            var pdbFile = document.getElementById('file');
-            var filename = pdbFile.value;
-            let pdb = document.getElementById('pdb');
-            let mmCif = document.getElementById('mmCif');
-            if (filename != '' && !hasPDBExtension(filename)) {
-                alert('The uploaded file is not a PDB or a mmCIF file');
-            } else {
-                addElementColorsInput();
-                document.getElementById('myForm').submit();
-                document.getElementById('processing').style.display = 'block';
+        // Show error message in toast
+        function showError(message, focusElement) {
+            document.getElementById('toastMessage').textContent = message;
+            errorToast.show();
+
+            // Add error styling to element if provided
+            if (focusElement) {
+                focusElement.classList.add('is-invalid');
+                focusElement.focus();
+
+                // Remove error styling after user starts typing/interacting
+                focusElement.addEventListener('input', function handler() {
+                    this.classList.remove('is-invalid');
+                    this.removeEventListener('input', handler);
+                }, { once: true });
             }
-            addElementColorsInput();
-            document.getElementById('myForm').submit();
-            document.getElementById('processing').style.display = 'block';
         }
 
-        function hasPDBExtension(filename) {
+        // Tab switching - clear required validation and error states
+        document.getElementById('lookup-tab').addEventListener('shown.bs.tab', function() {
+            document.getElementById('file').removeAttribute('required');
+            document.getElementById('pdb_name').classList.remove('is-invalid');
+            document.getElementById('dropZone').classList.remove('is-invalid');
+        });
+        document.getElementById('upload-tab').addEventListener('shown.bs.tab', function() {
+            document.getElementById('pdb_name').removeAttribute('required');
+            document.getElementById('pdb_name').classList.remove('is-invalid');
+            document.getElementById('dropZone').classList.remove('is-invalid');
+        });
+
+        // Drag and drop functionality
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('file');
+        const fileNameDisplay = document.getElementById('fileName');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (isValidFile(file.name)) {
+                    fileInput.files = files;
+                    showFileName(file.name);
+                    dropZone.classList.remove('is-invalid');
+                } else {
+                    showError('Please upload a .pdb or .cif file', dropZone);
+                }
+            }
+        });
+
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                showFileName(this.files[0].name);
+            }
+        });
+
+        function showFileName(name) {
+            fileNameDisplay.textContent = name;
+            dropZone.classList.add('has-file');
+        }
+
+        function isValidFile(filename) {
             return filename.toLowerCase().endsWith('.pdb') || filename.toLowerCase().endsWith('.cif');
         }
 
-        var selectedElement = null;
+        // DPI custom input toggle
+        document.getElementById('dpi').addEventListener('change', function() {
+            const customInput = document.getElementById('dpi_custom');
+            if (this.value === 'custom') {
+                customInput.style.display = 'block';
+                customInput.focus();
+            } else {
+                customInput.style.display = 'none';
+            }
+        });
+
+        // Color selection
         function selectElement(element) {
             selectedElement = element;
             document.getElementById('element_color').click();
         }
 
         function getTextColor(backgroundColor) {
-            var r = parseInt(backgroundColor.substr(1, 2), 16);
-            var g = parseInt(backgroundColor.substr(3, 2), 16);
-            var b = parseInt(backgroundColor.substr(5, 2), 16);
-
-            var luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            const r = parseInt(backgroundColor.substr(1, 2), 16);
+            const g = parseInt(backgroundColor.substr(3, 2), 16);
+            const b = parseInt(backgroundColor.substr(5, 2), 16);
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
             return luminance > 0.5 ? '#000000' : '#ffffff';
         }
 
         document.getElementById('element_color').addEventListener('input', function() {
             if (selectedElement !== null) {
-                var selectedColor = this.value;
+                const selectedColor = this.value;
                 elementColors[selectedElement] = selectedColor;
 
-                var button = document.querySelector(`button[data-element="${selectedElement}"]`);
-                console.log(button);
+                const button = document.querySelector(`button[data-element="${selectedElement}"]`);
                 if (button) {
                     button.style.backgroundColor = selectedColor;
                     button.style.color = getTextColor(selectedColor);
                 }
-            } else {
-                console.error('No element selected.');
             }
         });
 
-        function addElementColorsInput() {
-             var elementColorsInput = document.createElement('input');
-             elementColorsInput.type = 'hidden';
-             elementColorsInput.name = 'element_colors';
-             elementColorsInput.value = JSON.stringify(elementColors);
-             document.getElementById('myForm').appendChild(elementColorsInput);
-        };
+        // Form submission
+        function submitForm() {
+            const activeTab = document.querySelector('.nav-link.active').id;
+            const pdbNameInput = document.getElementById('pdb_name');
+            const pdbName = pdbNameInput.value.trim();
+            const fileInput = document.getElementById('file');
+
+            // Validate based on active tab
+            if (activeTab === 'lookup-tab') {
+                if (!pdbName) {
+                    showError('Please enter a PDB code', pdbNameInput);
+                    return;
+                }
+                if (pdbName.length !== 4) {
+                    showError('PDB code must be exactly 4 characters', pdbNameInput);
+                    return;
+                }
+            } else {
+                if (!fileInput.files.length) {
+                    showError('Please select a PDB or mmCIF file', dropZone);
+                    return;
+                }
+                if (!isValidFile(fileInput.files[0].name)) {
+                    showError('Please upload a valid .pdb or .cif file', dropZone);
+                    return;
+                }
+            }
+
+            // Handle custom DPI
+            const dpiSelect = document.getElementById('dpi');
+            const dpiCustom = document.getElementById('dpi_custom');
+            if (dpiSelect.value === 'custom') {
+                if (!dpiCustom.value || dpiCustom.value < 72 || dpiCustom.value > 1200) {
+                    showError('Please enter a valid DPI between 72 and 1200', dpiCustom);
+                    return;
+                }
+                // Replace select with custom value for submission
+                dpiSelect.innerHTML = `<option value="${dpiCustom.value}" selected>${dpiCustom.value}</option>`;
+            }
+
+            // Add element colors to form
+            const elementColorsInput = document.createElement('input');
+            elementColorsInput.type = 'hidden';
+            elementColorsInput.name = 'element_colors';
+            elementColorsInput.value = JSON.stringify(elementColors);
+            document.getElementById('mainForm').appendChild(elementColorsInput);
+
+            // Show processing overlay
+            document.getElementById('processingOverlay').classList.add('show');
+
+            // Submit form
+            document.getElementById('mainForm').submit();
+        }
+
+        // Auto-uppercase PDB code
+        document.getElementById('pdb_name').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
     </script>
 </body>
 </html>

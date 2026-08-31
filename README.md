@@ -1,5 +1,5 @@
-[![DOI](https://zenodo.org/badge/816348234.svg)](https://doi.org/10.5281/zenodo.12554830)
-[![DOI](http://img.shields.io/badge/DOI-10.48550/arXiv.2408.03436-B31B1B.svg)](https://doi.org/10.48550/arXiv.2408.03436)
+[![DOI](http://img.shields.io/badge/DOI-10.1016/j.csbj.2025.02.038-B31B1B.svg)](https://doi.org/10.1016/j.csbj.2025.02.038)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12554830.svg)](https://doi.org/10.5281/zenodo.12554830)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # ProS<sup>2</sup>Vi - a Python Tool for Visualizing Proteins Secondary Structure
@@ -264,32 +264,36 @@ mkdssp --version  # Should show version 4.0.0 or higher
       
 ## Citing ProS<sup>2</sup>Vi
 
-If you use ProS<sup>2</sup>Vi in academic work, please cite the software as
-
-```
-@software{qasim_2024_12554831,
-  author       = {Qasim, Muhammad Luckman and
-                  Alisaraie, Laleh},
-  title        = {Alisaraie-Group/ProS2Vi: ProS2Vi 1.1.0},
-  month        = jun,
-  year         = 2024,
-  publisher    = {Zenodo},
-  version      = {v1.1.0},
-  doi          = {10.5281/zenodo.12554831},
-  url          = {https://doi.org/10.5281/zenodo.12554831}
-}
-```
-
-and the article as
+If you use ProS<sup>2</sup>Vi in academic work, please cite the article as:
 
 ```
 @misc{qasim2024pros2vipythontoolvisualizing,
-      title={ProS2Vi: a Python Tool for Visualizing Proteins Secondary Structure}, 
-      author={Luckman Qasim and Laleh Alisaraie},
-      year={2024},
-      eprint={2408.03436},
-      archivePrefix={arXiv},
-      primaryClass={q-bio.BM},
-      url={https://arxiv.org/abs/2408.03436}, 
+title = {{{ProS2Vi}}: {{A Python}} Tool for Visualizing Proteins Secondary Structure},
+  author = {Qasim, M. Luckman and Alisaraie, Laleh},
+  year = 2025,
+  journal  = {Computational and Structural Biotechnology Journal},
+  volume   = {27},
+  pages    = {1001--1011},
+  issn     = {2001-0370},
+  doi      = {10.1016/j.csbj.2025.02.038},
+  keywords = {Folding,Local,Proteins secondary structure,Python,Python.}
+  url      = {https://doi.org/10.1016/j.csbj.2025.02.038}, 
 }
 ```
+
+and the software as:
+
+```
+@software{qasim_2024_12554830,
+  author       = {Qasim, Muhammad Luckman and
+                  Alisaraie, Laleh},
+  title        = {Alisaraie-Group/ProS2Vi: ProS2Vi 1.1.0},
+  month        = aug,
+  year         = 2026,
+  publisher    = {Zenodo},
+  version      = {v1.1.0},
+  doi          = {10.5281/zenodo.12554830},
+  url          = {https://doi.org/10.5281/zenodo.12554830}
+}
+```
+
